@@ -82,9 +82,10 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
             arrows: false,
             pagination: false,
             autoScroll: {
-              speed: 1,
+              speed: 2, // Increased speed from 1 to 2
               pauseOnHover: true,
             },
+            padding: '5rem', // Added padding to show more context (start from a little left feeling)
             breakpoints: {
               1024: {
                 perPage: 2,
