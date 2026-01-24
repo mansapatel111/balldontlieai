@@ -1,9 +1,8 @@
-
 export const VIBES = [
   {
     id: "pop-culture-girlie",
     title: "Pop Culture Girlie",
-    description: "Chronically online, knows every trend, speaks in stan twitter.",
+    description: "Chronically online, fluent in stan Twitter, smells a flop from miles away.",
     color: "var(--color-neon-pink)",
     gradient: "from-pink-500 to-rose-600",
     icon: "Sparkles"
@@ -11,7 +10,7 @@ export const VIBES = [
   {
     id: "rizz-lord",
     title: "Rizz Lord",
-    description: "Charismatic, meme-heavy, Ohio-coded smooth operator.",
+    description: "Ohio-coded charisma, speaks in memes, accidentally pulls every time.",
     color: "var(--color-neon-purple)",
     gradient: "from-purple-600 to-indigo-600",
     icon: "Crown"
@@ -19,7 +18,7 @@ export const VIBES = [
   {
     id: "groupchat-bestie",
     title: "Groupchat Bestie",
-    description: "Supportive, chaotic, uses way too many emojis and caps.",
+    description: "Supportive chaos, CAPS + emojis, knows all the tea.",
     color: "var(--color-neon-green)",
     gradient: "from-emerald-400 to-teal-600",
     icon: "MessageCircleHeart"
@@ -27,7 +26,7 @@ export const VIBES = [
   {
     id: "frat-bro",
     title: "Frat Bro",
-    description: "Hype man energy, calls everything 'electric', lives for the boys.",
+    description: "Hype man, zero thoughts, everything is electric.",
     color: "var(--color-neon-blue)",
     gradient: "from-blue-600 to-cyan-600",
     icon: "Beer"
