@@ -1,18 +1,15 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowRight, Play, Sparkles } from "lucide-react";
+import { ShaderAnimation } from "@/components/shader-animation";
 
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-20 pb-10 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="/assets/hero-bg.png" 
-          alt="Background" 
-          className="w-full h-full object-cover opacity-40 mix-blend-overlay"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+        <ShaderAnimation />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background" />
       </div>
 
       <div className="container px-4 relative z-10 mx-auto max-w-6xl">
