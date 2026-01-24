@@ -16,16 +16,6 @@ export function Hero() {
       <div className="container px-4 relative z-10 mx-auto max-w-6xl">
         <div className="flex flex-col items-center text-center">
           
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8"
-          >
-            <span className="w-2 h-2 rounded-full bg-neon-green animate-pulse" />
-            <span className="text-xs font-display font-bold italic tracking-widest uppercase text-neon-green">v2.0 Commentary Engine Live</span>
-          </motion.div>
-
           <motion.h1 
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -39,7 +29,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-cyan-200/80 font-display font-bold italic max-w-3xl mb-12 leading-relaxed"
+            className="text-lg md:text-xl text-white font-display font-bold italic max-w-3xl mb-12 leading-relaxed"
           >
             Transform any boring sports clip into high-energy brainrot commentary.
             <br className="hidden md:block" />
