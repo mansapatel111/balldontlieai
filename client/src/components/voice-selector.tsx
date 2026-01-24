@@ -3,6 +3,7 @@ import { Mic, Volume2, Sparkles, Wand2, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useSound from "use-sound";
 import { GlareCard } from "@/components/ui/glare-card";
+import { ScrollVelocity } from "@/components/ui/scroll-velocity";
 
 // Import voice images
 import nickiImg from "@/assets/voices/nicki.png";
@@ -58,62 +59,73 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
   const [playHover] = useSound("/sounds/hover.mp3", { volume: 0.5 });
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <div className="text-center space-y-2 mb-8 flex-shrink-0">
-        <h2 className="text-4xl font-display font-bold text-white uppercase italic tracking-tight text-glow">
-          Select Your Voice
-        </h2>
-        <p className="text-white/60 font-display text-lg">
-          Who should narrate the chaos?
-        </p>
+    <div className="w-full h-full flex flex-col relative overflow-hidden">
+      {/* Background Scrolling Text */}
+      <div className="absolute top-1/2 left-0 w-full -translate-y-1/2 -z-10 opacity-10 pointer-events-none">
+         <ScrollVelocity
+           texts={["CHOOSE YOUR VOICE", "SELECT NARRATOR", "WHO SPEAKS?", "PICK A VIBE"]} 
+           velocity={30} 
+           className="text-[15rem] font-black text-white"
+         />
       </div>
 
-      <div className="w-full overflow-x-auto pb-12 pt-4 px-4 scrollbar-hide">
-        <div className="flex gap-8 min-w-max px-8 mx-auto justify-center">
-          {VOICES.map((voice, idx) => {
-            const isSelected = selectedVoice === voice.id;
+      <div className="flex-1 flex flex-col items-center justify-center relative z-10">
+        <div className="text-center space-y-2 mb-8 flex-shrink-0">
+          <h2 className="text-4xl font-display font-bold text-white uppercase italic tracking-tight text-glow">
+            Select Your Voice
+          </h2>
+          <p className="text-white/60 font-display text-lg">
+            Who should narrate the chaos?
+          </p>
+        </div>
 
-            return (
-              <motion.div
-                key={voice.id}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.1, duration: 0.5 }}
-                className="relative group cursor-pointer"
-                onClick={() => onSelect(voice.id)}
-                onMouseEnter={() => playHover()}
-              >
-                <div className={cn(
-                  "transition-all duration-300 transform",
-                  isSelected ? "scale-105 ring-4 ring-primary ring-offset-4 ring-offset-black rounded-[48px]" : "hover:scale-105"
-                )}>
-                  <GlareCard className="flex flex-col items-center justify-end pb-8">
-                    <img 
-                      src={voice.image} 
-                      alt={voice.title}
-                      className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-                    
-                    <div className="relative z-10 text-center px-4">
-                      <h3 className="text-2xl font-bold text-white font-display uppercase italic tracking-wider mb-2 drop-shadow-lg">
-                        {voice.title}
-                      </h3>
-                      <p className="text-white/80 text-xs font-medium max-w-[200px] mx-auto leading-relaxed drop-shadow-md">
-                        {voice.description}
-                      </p>
-                    </div>
+        <div className="w-full overflow-x-auto pb-12 pt-4 px-4 scrollbar-hide">
+          <div className="flex gap-8 min-w-max px-8 justify-start md:justify-center pl-[10vw]">
+            {VOICES.map((voice, idx) => {
+              const isSelected = selectedVoice === voice.id;
 
-                    {isSelected && (
-                      <div className="absolute top-4 right-4 bg-primary text-black font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wider animate-pulse">
-                        Selected
+              return (
+                <motion.div
+                  key={voice.id}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1, duration: 0.5 }}
+                  className="relative group cursor-pointer"
+                  onClick={() => onSelect(voice.id)}
+                  onMouseEnter={() => playHover()}
+                >
+                  <div className={cn(
+                    "transition-all duration-300 transform",
+                    isSelected ? "scale-105 ring-4 ring-primary ring-offset-4 ring-offset-black rounded-[48px]" : "hover:scale-105"
+                  )}>
+                    <GlareCard className="flex flex-col items-center justify-end pb-8">
+                      <img 
+                        src={voice.image} 
+                        alt={voice.title}
+                        className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                      
+                      <div className="relative z-10 text-center px-4">
+                        <h3 className="text-2xl font-bold text-white font-display uppercase italic tracking-wider mb-2 drop-shadow-lg">
+                          {voice.title}
+                        </h3>
+                        <p className="text-white/80 text-xs font-medium max-w-[200px] mx-auto leading-relaxed drop-shadow-md">
+                          {voice.description}
+                        </p>
                       </div>
-                    )}
-                  </GlareCard>
-                </div>
-              </motion.div>
-            );
-          })}
+
+                      {isSelected && (
+                        <div className="absolute top-4 right-4 bg-primary text-black font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wider animate-pulse">
+                          Selected
+                        </div>
+                      )}
+                    </GlareCard>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
