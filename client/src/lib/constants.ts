@@ -1,6 +1,14 @@
 
 export const VIBES = [
   {
+    id: "pop-culture-girlie",
+    title: "Pop Culture Girlie",
+    description: "Chronically online, knows every trend, speaks in stan twitter.",
+    color: "var(--color-neon-pink)",
+    gradient: "from-pink-500 to-rose-600",
+    icon: "Sparkles"
+  },
+  {
     id: "rizz-lord",
     title: "Rizz Lord",
     description: "Charismatic, meme-heavy, Ohio-coded smooth operator.",
@@ -9,36 +17,20 @@ export const VIBES = [
     icon: "Crown"
   },
   {
-    id: "sigma-grindset",
-    title: "Sigma Grindset",
-    description: "Motivational, hustle culture, absolutely based takes only.",
-    color: "var(--color-destructive)",
-    gradient: "from-red-600 to-orange-600",
-    icon: "TrendingUp"
-  },
-  {
-    id: "zoomer-chaos",
-    title: "Zoomer Chaos",
-    description: "Unhinged, ADHD energy, max brainrot overload.",
+    id: "groupchat-bestie",
+    title: "Groupchat Bestie",
+    description: "Supportive, chaotic, uses way too many emojis and caps.",
     color: "var(--color-neon-green)",
-    gradient: "from-green-500 to-emerald-700",
-    icon: "Zap"
+    gradient: "from-emerald-400 to-teal-600",
+    icon: "MessageCircleHeart"
   },
   {
-    id: "npc-energy",
-    title: "NPC Energy",
-    description: "Oblivious, repetitive, background character vibes.",
-    color: "var(--color-muted-foreground)",
-    gradient: "from-gray-500 to-slate-700",
-    icon: "Bot"
-  },
-  {
-    id: "giga-chad",
-    title: "Giga Chad",
-    description: "Dominant, assertive, peak masculinity commentary.",
+    id: "frat-bro",
+    title: "Frat Bro",
+    description: "Hype man energy, calls everything 'electric', lives for the boys.",
     color: "var(--color-neon-blue)",
-    gradient: "from-cyan-500 to-blue-700",
-    icon: "Dumbbell"
+    gradient: "from-blue-600 to-cyan-600",
+    icon: "Beer"
   }
 ];
 

@@ -16,7 +16,7 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
         <p className="text-muted-foreground">Choose who ruins your video</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 px-4">
         {VIBES.map((vibe, idx) => {
           const Icon = (Icons as any)[vibe.icon];
           const isSelected = selectedVibe === vibe.id;
