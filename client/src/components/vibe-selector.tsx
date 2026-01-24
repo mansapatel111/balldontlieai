@@ -46,89 +46,57 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
                 onSelect(vibe.id);
               }}
               onMouseEnter={() => playHover()}
-              className="perspective-1000 group/flip"
+              className="perspective-1000"
             >
-              <div className="relative w-full h-64 transition-transform duration-700 transform-style-3d group-hover/flip:rotate-y-180">
-                {/* Front Face */}
-                <div className="absolute inset-0 backface-hidden">
-                  <HolographicCard 
-                    className={cn(
-                      "h-full w-full cursor-pointer p-8 flex flex-col items-center justify-center border-2 bg-black/80 backdrop-blur-xl text-center",
-                      isSelected 
-                        ? "border-primary shadow-[0_0_50px_-12px_rgba(var(--primary),0.5)] ring-2 ring-primary/50" 
-                        : "border-white/10 hover:border-white/30"
-                    )}
-                    style={{
-                        // @ts-ignore
-                        "--vibe-color": vibe.color
-                    }}
-                  >
-                     <div className={cn(
-                        "p-6 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-6 transition-colors duration-300",
+              <HolographicCard 
+                className={cn(
+                  "h-64 cursor-pointer p-8 flex flex-col items-start justify-between border-2 bg-black/80 backdrop-blur-xl",
+                  isSelected 
+                    ? "border-primary shadow-[0_0_50px_-12px_rgba(var(--primary),0.5)] ring-2 ring-primary/50" 
+                    : "border-white/10 hover:border-white/30"
+                )}
+                style={{
+                    // @ts-ignore
+                    "--vibe-color": vibe.color
+                }}
+              >
+                 {/* Card Content */}
+                <div className="flex w-full justify-between items-start">
+                    <div className={cn(
+                        "p-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md transition-colors duration-300",
                         isSelected ? "bg-primary/20 border-primary/50 text-primary" : "text-white/80 group-hover:text-white"
                     )}>
-                        {Icon && <Icon className="w-12 h-12" />}
+                        {Icon && <Icon className="w-8 h-8" />}
                     </div>
+                    {isSelected && (
+                        <div className="px-3 py-1 rounded-full bg-primary text-black text-xs font-bold uppercase tracking-wider animate-pulse">
+                            Selected
+                        </div>
+                    )}
+                </div>
 
+                <div className="space-y-2 relative z-10">
                     <h3 className={cn(
                         "text-3xl font-display font-bold uppercase italic tracking-wide transition-colors duration-300",
                          isSelected ? "text-white text-glow-sm" : "text-white/90"
                     )}>
                         {vibe.title}
                     </h3>
-
-                    {/* Ambient Glow */}
-                    <div 
-                        className={cn(
-                            "absolute inset-0 opacity-20 blur-3xl transition-colors duration-500 -z-10",
-                        )}
-                        style={{
-                            background: `radial-gradient(circle at center, ${vibe.color}, transparent 70%)`
-                        }}
-                    />
-                  </HolographicCard>
+                    <p className="text-white/60 text-sm font-medium leading-relaxed max-w-[90%]">
+                        {vibe.description}
+                    </p>
                 </div>
 
-                {/* Back Face */}
-                <div className="absolute inset-0 backface-hidden rotate-y-180">
-                  <HolographicCard 
+                {/* Ambient Glow */}
+                <div 
                     className={cn(
-                      "h-full w-full cursor-pointer p-8 flex flex-col items-start justify-center border-2 bg-black/90 backdrop-blur-xl",
-                      isSelected 
-                        ? "border-primary shadow-[0_0_50px_-12px_rgba(var(--primary),0.5)] ring-2 ring-primary/50" 
-                        : "border-white/10 hover:border-white/30"
+                        "absolute inset-0 opacity-20 blur-3xl transition-colors duration-500 -z-10",
                     )}
                     style={{
-                        // @ts-ignore
-                        "--vibe-color": vibe.color
+                        background: `radial-gradient(circle at center, ${vibe.color}, transparent 70%)`
                     }}
-                  >
-                    <div className="space-y-4 relative z-10 w-full text-center">
-                        <div className="text-sm font-bold uppercase tracking-widest text-white/50 mb-2">
-                           Vibe Check
-                        </div>
-                        <p className="text-white/90 text-lg font-medium leading-relaxed">
-                            {vibe.description}
-                        </p>
-                        {isSelected && (
-                            <div className="inline-block px-4 py-1.5 rounded-full bg-primary text-black text-xs font-bold uppercase tracking-wider animate-pulse mt-4">
-                                Selected
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Ambient Glow */}
-                    <div 
-                        className={cn(
-                            "absolute inset-0 opacity-20 blur-3xl transition-colors duration-500 -z-10",
-                        )}
-                        style={{
-                            background: `radial-gradient(circle at center, ${vibe.color}, transparent 70%)`
-                        }}
-                    />
-                  </HolographicCard>
-                </div>
-              </div>
+                />
+              </HolographicCard>
             </motion.div>
           );
         })}
