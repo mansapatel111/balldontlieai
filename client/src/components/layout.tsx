@@ -19,14 +19,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </span>
         </Link>
 
-        <div className="pointer-events-auto flex items-center gap-4">
-          <a href="#" className="text-sm font-medium text-muted-foreground hover:text-white transition-colors hidden sm:block">
+        <div className="pointer-events-auto flex items-center gap-6">
+          <a href="#" className="text-sm font-display font-bold italic tracking-tighter text-muted-foreground hover:text-white transition-colors hidden sm:block uppercase">
             About
           </a>
-          <a href="#" className="text-sm font-medium text-muted-foreground hover:text-white transition-colors hidden sm:block">
+          <a href="#" className="text-sm font-display font-bold italic tracking-tighter text-muted-foreground hover:text-white transition-colors hidden sm:block uppercase">
             Showcase
           </a>
-          <Link href="/studio" className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-sm font-bold transition-all hover:scale-105 active:scale-95 text-white">
+          <Link href="/studio" className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/10 px-6 py-2 rounded-full text-sm font-display font-bold italic tracking-tighter transition-all hover:scale-105 active:scale-95 text-white uppercase">
               Launch App
           </Link>
         </div>

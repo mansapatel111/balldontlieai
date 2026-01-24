@@ -33,7 +33,7 @@ export function Hero() {
           >
             BALL DON'T
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-purple via-neon-blue to-neon-purple bg-[length:200%_auto] animate-background-pan">
+            <span className="text-white">
               LIE AI
             </span>
           </motion.h1>
