@@ -106,7 +106,7 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            onClick={() => handleSampleSelect(video.id, video.videoUrl)}
+            onClick={() => handleSampleSelect(video.id, video.url)}
             className={cn(
               "group relative aspect-video rounded-xl overflow-hidden cursor-pointer border transition-all duration-300",
               selectedId === video.id 
