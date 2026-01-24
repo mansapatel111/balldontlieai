@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { VIBES } from "@/lib/constants";
-import { Play, Pause, SkipBack, Volume2, Share2, Download, RefreshCw } from "lucide-react";
+import { Play, Pause, SkipBack, Volume2, Share2, Download, RefreshCw, Loader2 } from "lucide-react";
 
 // Declare YouTube IFrame API types
 declare global {
@@ -21,6 +21,8 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [transcript, setTranscript] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const vibe = VIBES.find(v => v.id === vibeId);
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
@@ -95,35 +97,73 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
     setIsPlaying(!isPlaying);
   };
 
-  // Fake commentary generation simulation
+  // Fetch AI commentary and audio
   useEffect(() => {
-    if (!isPlaying) return;
-    
-    const interval = setInterval(() => {
-      setProgress(p => (p >= 100 ? 0 : p + 0.5));
-      
-      // Randomly add brainrot commentary
-      if (Math.random() > 0.8) {
-        const phrases = [
-          "NAHHH BRO IS COOKING 💀",
-          "WHAT IS THAT FORM???",
-          "OHIO RIZZ UNLOCKED",
-          "LITERAL NPC BEHAVIOR",
-          "BLUD THINK HE HIM 😭",
-          "ABSOLUTE CINEMA",
-          "SKIBIDI TOILET ENERGY",
-          "NO SHOT HE JUST DID THAT",
-          "CHAT IS THIS REAL??",
-          "MOGGED BY GRAVITY",
-          "NEGATIVE AURA DETECTED"
-        ];
-        const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-        setTranscript(prev => [...prev.slice(-4), randomPhrase]);
-      }
-    }, 100);
+    if (!youtubeId || !vibeId) return;
 
-    return () => clearInterval(interval);
-  }, [isPlaying]);
+    const fetchCommentary = async () => {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        const response = await fetch('/api/process-with-audio', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            videoId: youtubeId,
+            personality: vibeId,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`API request failed: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        
+        // Set the audio source
+        if (data.audioUrl && audioRef.current) {
+          audioRef.current.src = data.audioUrl;
+        }
+
+        // Display commentary in transcript
+        if (data.commentary && Array.isArray(data.commentary)) {
+          const commentaryTexts = data.commentary.map((item: any) => item.text);
+          setTranscript(commentaryTexts);
+        }
+      } catch (err) {
+        console.error('Error fetching commentary:', err);
+        setError(err instanceof Error ? err.message : 'Failed to generate commentary');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCommentary();
+  }, [youtubeId, vibeId]);
+
+  // Remove the fake commentary generation
+  // useEffect(() => {
+  //   if (!isPlaying) return;
+    
+  //   const interval = setInterval(() => {
+  //     setProgress(p => (p >= 100 ? 0 : p + 0.5));
+      
+  //     // Randomly add brainrot commentary
+  //     if (Math.random() > 0.8) {
+  //       const phrases = [
+  //         "NAHHH BRO IS COOKING 💀",
+  //         ...
+  //       ];
+  //       const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+  //       setTranscript(prev => [...prev.slice(-4), randomPhrase]);
+  //     }
+  //   }, 100);
+
+  //   return () => clearInterval(interval);
+  // }, [isPlaying]);
 
   return (
     <div className="w-full h-[calc(100vh-100px)] grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -183,8 +223,22 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-display font-bold text-white">Live Commentary</h3>
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              <span className="text-xs font-mono text-red-500 uppercase">Processing</span>
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 text-yellow-500 animate-spin" />
+                  <span className="text-xs font-mono text-yellow-500 uppercase">Generating</span>
+                </>
+              ) : error ? (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-red-500" />
+                  <span className="text-xs font-mono text-red-500 uppercase">Error</span>
+                </>
+              ) : (
+                <>
+                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                  <span className="text-xs font-mono text-green-500 uppercase">Ready</span>
+                </>
+              )}
             </div>
           </div>
           
@@ -223,23 +277,35 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
           <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-black/40 to-transparent z-10" />
           
           <div className="space-y-4 overflow-y-auto h-full pb-4 flex flex-col justify-end">
-             <AnimatePresence mode="popLayout">
-                {transcript.map((text, i) => (
-                  <motion.div
-                    key={`${i}-${text}`}
-                    initial={{ opacity: 0, x: 20, scale: 0.95 }}
-                    animate={{ opacity: 1, x: 0, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm"
-                  >
-                    <p className="text-white font-medium text-lg leading-snug">"{text}"</p>
-                  </motion.div>
-                ))}
-             </AnimatePresence>
-             {transcript.length === 0 && (
-                <div className="text-center text-muted-foreground py-10 opacity-50">
-                  Waiting for video playback...
+             {isLoading ? (
+                <div className="text-center text-muted-foreground py-10">
+                  <Loader2 className="w-8 h-8 mx-auto mb-4 animate-spin text-neon-purple" />
+                  <p className="text-sm">Generating AI commentary...</p>
                 </div>
+             ) : error ? (
+                <div className="text-center text-red-500 py-10">
+                  <p className="text-sm font-medium">⚠️ {error}</p>
+                  <p className="text-xs text-red-500/60 mt-2">Please try another video or check your API keys</p>
+                </div>
+             ) : (
+                <AnimatePresence mode="popLayout">
+                  {transcript.map((text, i) => (
+                    <motion.div
+                      key={`${i}-${text}`}
+                      initial={{ opacity: 0, x: 20, scale: 0.95 }}
+                      animate={{ opacity: 1, x: 0, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      className="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm"
+                    >
+                      <p className="text-white font-medium text-lg leading-snug">"{text}"</p>
+                    </motion.div>
+                  ))}
+                  {transcript.length === 0 && (
+                    <div className="text-center text-muted-foreground py-10 opacity-50">
+                      Waiting for video playback...
+                    </div>
+                  )}
+                </AnimatePresence>
              )}
           </div>
         </div>

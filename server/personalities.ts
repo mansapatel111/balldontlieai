@@ -1,3 +1,5 @@
+export const MODEL = "google/gemini-2.0-flash-exp:free";
+
 export const PERSONALITIES: Record<string, string> = {
   "Rizz Lord": `Rewrite the following transcript as the Rizz Lord.
 
@@ -74,5 +76,4 @@ CONSTRAINTS:
   transcripts can be put over the original video`,
 };
 
-export const MODEL = "google/gemini-2.0-flash-exp:free";
 export const WPS = 2.8; // words per second for announcer pacing

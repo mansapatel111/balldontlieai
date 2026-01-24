@@ -5,13 +5,21 @@ import { YoutubeTranscript } from "youtube-transcript";
 import OpenAI from "openai";
 import { PERSONALITIES, MODEL } from "./personalities";
 import dotenv from "dotenv";
+import { ElevenLabsClient, stream } from "elevenlabs";
+import fs from "fs";
+import path from "path";
 
 dotenv.config();
 
-// OpenRouter client
+// OpenRouter client (using Gemini model)
 const client = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
   apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+// ElevenLabs client
+const elevenlabs = new ElevenLabsClient({
+  apiKey: process.env.ELEVENLABS_API_KEY,
 });
 
 interface TranscriptSnippet {
@@ -239,6 +247,171 @@ ${JSON.stringify(formatted, null, 2)}
     } catch (error: any) {
       console.error("Error processing video:", error);
       res.status(500).json({ error: error.message || "Failed to process video" });
+    }
+  });
+
+  // Generate audio from commentary
+  app.post("/api/generate-audio", async (req, res) => {
+    try {
+      const { commentary, voiceId } = req.body;
+
+      if (!commentary || !Array.isArray(commentary)) {
+        return res.status(400).json({ 
+          error: "commentary array is required" 
+        });
+      }
+
+      // Default voice ID (you can customize per personality)
+      const selectedVoiceId = voiceId || "21m00Tcm4TlvDq8ikWAM"; // Rachel voice
+
+      // Combine all commentary lines into one text
+      const fullText = commentary.map((c: RewrittenSnippet) => c.line).join(" ");
+
+      // Create audio directory if it doesn't exist
+      const audioDir = path.join(process.cwd(), "server", "public", "audio");
+      if (!fs.existsSync(audioDir)) {
+        fs.mkdirSync(audioDir, { recursive: true });
+      }
+
+      // Generate unique filename
+      const filename = `commentary_${Date.now()}.mp3`;
+      const filepath = path.join(audioDir, filename);
+
+      // Generate audio using ElevenLabs
+      const audio = await elevenlabs.generate({
+        voice: selectedVoiceId,
+        text: fullText,
+        model_id: "eleven_turbo_v2",
+      });
+
+      // Write audio to file
+      const writeStream = fs.createWriteStream(filepath);
+      audio.pipe(writeStream);
+
+      await new Promise((resolve, reject) => {
+        writeStream.on("finish", resolve);
+        writeStream.on("error", reject);
+      });
+
+      // Return URL to the audio file
+      res.json({ 
+        audioUrl: `/audio/${filename}`,
+        filename,
+      });
+    } catch (error: any) {
+      console.error("Error generating audio:", error);
+      res.status(500).json({ error: error.message || "Failed to generate audio" });
+    }
+  });
+
+  // Complete flow: process video and generate audio
+  app.post("/api/process-with-audio", async (req, res) => {
+    try {
+      const { videoId, personality, voiceId } = req.body;
+
+      if (!videoId || !personality) {
+        return res.status(400).json({ 
+          error: "videoId and personality are required" 
+        });
+      }
+
+      // Step 1: Fetch transcript
+      const transcript = await YoutubeTranscript.fetchTranscript(videoId);
+      const formatted: TranscriptSnippet[] = transcript.map((item) => ({
+        text: item.text,
+        start: item.offset / 1000,
+        duration: item.duration / 1000,
+      }));
+
+      // Step 2: Generate commentary
+      const totalTime = formatted.reduce((sum, snippet) => sum + snippet.duration, 0);
+      const basePrompt = PERSONALITIES[personality].replace("{total_time}", totalTime.toFixed(1));
+
+      const userPrompt = `
+${basePrompt}
+
+TASK:
+Rewrite EACH snippet's text into the chosen personality, while keeping the same event.
+Each rewritten line MUST be speakable within that snippet's duration.
+
+OUTPUT FORMAT (STRICT JSON ONLY):
+Return a JSON array. Each element must be:
+{
+  "start": <number>,
+  "duration": <number>,
+  "line": <string>
+}
+
+TRANSCRIPT SNIPPETS:
+${JSON.stringify(formatted, null, 2)}
+      `.trim();
+
+      const response = await client.chat.completions.create({
+        model: MODEL,
+        messages: [
+          {
+            role: "system",
+            content: "Return valid JSON only. Output must be a JSON array with keys start, duration, line.",
+          },
+          {
+            role: "user",
+            content: userPrompt,
+          },
+        ],
+        extra_headers: {
+          "HTTP-Referer": "http://localhost:5000",
+          "X-Title": "Ball Don't Lie AI",
+        },
+      });
+
+      const content = response.choices[0].message.content?.trim() || "";
+      let rewrittenTranscript: RewrittenSnippet[];
+      
+      try {
+        const jsonMatch = content.match(/```json\n([\s\S]*)\n```/) || content.match(/```\n([\s\S]*)\n```/);
+        const jsonString = jsonMatch ? jsonMatch[1] : content;
+        rewrittenTranscript = JSON.parse(jsonString);
+      } catch (parseError) {
+        console.error("Failed to parse AI response:", content);
+        return res.status(500).json({ error: "Failed to parse AI response", rawResponse: content });
+      }
+
+      // Step 3: Generate audio
+      const selectedVoiceId = voiceId || "21m00Tcm4TlvDq8ikWAM";
+      const fullText = rewrittenTranscript.map((c) => c.line).join(" ");
+
+      const audioDir = path.join(process.cwd(), "server", "public", "audio");
+      if (!fs.existsSync(audioDir)) {
+        fs.mkdirSync(audioDir, { recursive: true });
+      }
+
+      const filename = `commentary_${Date.now()}.mp3`;
+      const filepath = path.join(audioDir, filename);
+
+      const audio = await elevenlabs.generate({
+        voice: selectedVoiceId,
+        text: fullText,
+        model_id: "eleven_turbo_v2",
+      });
+
+      const writeStream = fs.createWriteStream(filepath);
+      audio.pipe(writeStream);
+
+      await new Promise((resolve, reject) => {
+        writeStream.on("finish", resolve);
+        writeStream.on("error", reject);
+      });
+
+      res.json({ 
+        originalTranscript: formatted,
+        commentary: rewrittenTranscript,
+        audioUrl: `/audio/${filename}`,
+        totalTime,
+        personality,
+      });
+    } catch (error: any) {
+      console.error("Error processing with audio:", error);
+      res.status(500).json({ error: error.message || "Failed to process video with audio" });
     }
   });
 
