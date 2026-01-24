@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowRight, Play, Sparkles } from "lucide-react";
 import { ShaderAnimation } from "@/components/shader-animation";
+import { GlowingShadow } from "@/components/glowing-shadow";
 
 export function Hero() {
   return (
@@ -22,7 +23,7 @@ export function Hero() {
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8"
           >
             <span className="w-2 h-2 rounded-full bg-neon-green animate-pulse" />
-            <span className="text-xs font-mono text-neon-green tracking-widest uppercase">v2.0 Commentary Engine Live</span>
+            <span className="text-xs font-display font-bold italic tracking-widest uppercase text-neon-green">v2.0 Commentary Engine Live</span>
           </motion.div>
 
           <motion.h1 
@@ -42,9 +43,9 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed"
+            className="text-lg md:text-xl text-muted-foreground font-display font-bold italic max-w-2xl mb-12 leading-relaxed"
           >
-            Transform any boring sports clip into <span className="text-white font-bold">hilarious, high-energy brainrot commentary</span>. Powered by unhinged AI models trained on pure internet chaos.
+            Transform any boring sports clip into <span className="text-white">hilarious, high-energy brainrot commentary</span>. Powered by unhinged AI models trained on pure internet chaos.
           </motion.p>
 
           <motion.div 
@@ -53,14 +54,13 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 w-full justify-center"
           >
-            <Link href="/studio" className="group relative px-8 py-4 rounded-full bg-white text-black font-bold text-lg overflow-hidden transition-transform active:scale-95 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
-                <div className="absolute inset-0 bg-black/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-                <span className="relative flex items-center gap-2">
+            <GlowingShadow>
+              <Link href="/studio" className="flex items-center gap-2 px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-display font-bold italic text-lg backdrop-blur-sm transition-colors group">
                   Start Rotting Now <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </span>
-            </Link>
+              </Link>
+            </GlowingShadow>
             
-            <button className="px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium text-lg backdrop-blur-sm transition-colors flex items-center gap-2 group">
+            <button className="px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-display font-bold italic text-lg backdrop-blur-sm transition-colors flex items-center gap-2 group">
               <Play className="w-5 h-5 fill-current" />
               Watch Demo
             </button>

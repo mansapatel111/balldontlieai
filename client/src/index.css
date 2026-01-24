@@ -6,9 +6,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: 'Outfit', sans-serif;
+  --font-sans: 'Space Grotesk', sans-serif;
   --font-display: 'Space Grotesk', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-mono: 'Space Grotesk', monospace;
 
   --color-background: hsl(260 50% 3%);
   --color-foreground: hsl(0 0% 100%);
