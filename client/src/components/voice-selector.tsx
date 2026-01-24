@@ -1,7 +1,15 @@
 import { motion } from "framer-motion";
-import { Mic, Volume2, Sparkles, Wand2 } from "lucide-react";
+import { Mic, Volume2, Sparkles, Wand2, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useSound from "use-sound";
+import { GlareCard } from "@/components/ui/glare-card";
+
+// Import voice images
+import nickiImg from "@/assets/voices/nicki.png";
+import spongebobImg from "@/assets/voices/spongebob.png";
+import ghostfaceImg from "@/assets/voices/ghostface.png";
+import jamesImg from "@/assets/voices/james.png";
+import randomImg from "@/assets/voices/random.png";
 
 interface VoiceSelectorProps {
   selectedVoice: string | null;
@@ -10,32 +18,39 @@ interface VoiceSelectorProps {
 
 const VOICES = [
   {
-    id: "adam",
-    title: "Adam",
-    description: "Deep, resonant, authoritative but chill.",
-    icon: "Mic",
-    preview: "/voices/adam.mp3"
+    id: "nicki",
+    title: "Nicki",
+    description: "Sassy, fast-paced rap flow with attitude.",
+    image: nickiImg,
+    preview: "/voices/nicki.mp3"
   },
   {
-    id: "charlie",
-    title: "Charlie",
-    description: "High energy, fast-paced, excitement overload.",
-    icon: "Volume2",
-    preview: "/voices/charlie.mp3"
+    id: "spongebob",
+    title: "Spongebob",
+    description: "High-pitched, enthusiastic, nautical nonsense.",
+    image: spongebobImg,
+    preview: "/voices/spongebob.mp3"
   },
   {
-    id: "bella",
-    title: "Bella",
-    description: "Sassy, sharp, clear articulation with attitude.",
-    icon: "Sparkles",
-    preview: "/voices/bella.mp3"
+    id: "ghostface",
+    title: "Ghostface",
+    description: "Menacing, raspy, horror-movie chiller.",
+    image: ghostfaceImg,
+    preview: "/voices/ghostface.mp3"
   },
   {
-    id: "drake",
-    title: "Drake",
-    description: "Smooth, melodic, laid back flow.",
-    icon: "Wand2",
-    preview: "/voices/drake.mp3"
+    id: "james",
+    title: "James",
+    description: "Hey sisters! Energetic, dramatic makeup guru.",
+    image: jamesImg,
+    preview: "/voices/james.mp3"
+  },
+  {
+    id: "random",
+    title: "Random Celeb",
+    description: "Feeling lucky? Let fate decide the narrator.",
+    image: randomImg,
+    preview: "/voices/random.mp3"
   }
 ];
 
@@ -43,67 +58,63 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
   const [playHover] = useSound("/sounds/hover.mp3", { volume: 0.5 });
 
   return (
-    <div className="w-full max-w-4xl mx-auto h-full flex flex-col items-center">
-      <div className="text-center space-y-2 mb-12 flex-shrink-0">
-        <h2 className="text-3xl font-display font-bold text-white uppercase italic tracking-tight">Select Your Voice</h2>
-        <p className="text-white/60 font-display text-lg">Who should narrate the chaos?</p>
+    <div className="w-full h-full flex flex-col items-center justify-center">
+      <div className="text-center space-y-2 mb-8 flex-shrink-0">
+        <h2 className="text-4xl font-display font-bold text-white uppercase italic tracking-tight text-glow">
+          Select Your Voice
+        </h2>
+        <p className="text-white/60 font-display text-lg">
+          Who should narrate the chaos?
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
-        {VOICES.map((voice, idx) => {
-          const isSelected = selectedVoice === voice.id;
+      <div className="w-full overflow-x-auto pb-12 pt-4 px-4 scrollbar-hide">
+        <div className="flex gap-8 min-w-max px-8 mx-auto justify-center">
+          {VOICES.map((voice, idx) => {
+            const isSelected = selectedVoice === voice.id;
 
-          return (
-            <motion.button
-              key={voice.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              onClick={() => onSelect(voice.id)}
-              onMouseEnter={() => playHover()}
-              whileHover={{ scale: 1.02 }}
-              className={cn(
-                "relative rounded-2xl p-6 flex items-center gap-6 text-left transition-all duration-300 border backdrop-blur-sm overflow-hidden group h-32 w-full",
-                isSelected 
-                  ? "border-transparent ring-2 ring-white z-10 bg-white/10"
-                  : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
-              )}
-            >
-              {/* Background Glow for Selected State */}
-              {isSelected && (
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50" />
-              )}
-              
-              <div className={cn(
-                "flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center transition-colors border",
-                isSelected 
-                  ? "bg-white text-black border-transparent" 
-                  : "bg-black/20 text-white/70 border-white/10 group-hover:text-white group-hover:border-white/30"
-              )}>
-                {voice.id === "adam" && <Mic className="w-8 h-8" />}
-                {voice.id === "charlie" && <Volume2 className="w-8 h-8" />}
-                {voice.id === "bella" && <Sparkles className="w-8 h-8" />}
-                {voice.id === "drake" && <Wand2 className="w-8 h-8" />}
-              </div>
+            return (
+              <motion.div
+                key={voice.id}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.1, duration: 0.5 }}
+                className="relative group cursor-pointer"
+                onClick={() => onSelect(voice.id)}
+                onMouseEnter={() => playHover()}
+              >
+                <div className={cn(
+                  "transition-all duration-300 transform",
+                  isSelected ? "scale-105 ring-4 ring-primary ring-offset-4 ring-offset-black rounded-[48px]" : "hover:scale-105"
+                )}>
+                  <GlareCard className="flex flex-col items-center justify-end pb-8">
+                    <img 
+                      src={voice.image} 
+                      alt={voice.title}
+                      className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                    
+                    <div className="relative z-10 text-center px-4">
+                      <h3 className="text-2xl font-bold text-white font-display uppercase italic tracking-wider mb-2 drop-shadow-lg">
+                        {voice.title}
+                      </h3>
+                      <p className="text-white/80 text-xs font-medium max-w-[200px] mx-auto leading-relaxed drop-shadow-md">
+                        {voice.description}
+                      </p>
+                    </div>
 
-              <div className="relative z-10 flex-1">
-                <div className="flex items-center justify-between mb-1">
-                    <h3 className={cn(
-                    "font-display font-bold text-2xl uppercase italic transition-colors",
-                    isSelected ? "text-white" : "text-white/80 group-hover:text-white"
-                    )}>
-                    {voice.title}
-                    </h3>
-                    {isSelected && <div className="w-2 h-2 rounded-full bg-white animate-pulse" />}
+                    {isSelected && (
+                      <div className="absolute top-4 right-4 bg-primary text-black font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wider animate-pulse">
+                        Selected
+                      </div>
+                    )}
+                  </GlareCard>
                 </div>
-                
-                <p className="text-sm text-muted-foreground leading-snug font-medium">
-                  {voice.description}
-                </p>
-              </div>
-            </motion.button>
-          );
-        })}
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
