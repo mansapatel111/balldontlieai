@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
-import { Youtube, Upload, Play, Check } from "lucide-react";
+import { Upload, Play, Check } from "lucide-react";
 import { SAMPLE_VIDEOS } from "@/lib/constants";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Eyes from "@/components/eyes";
 import CircularCarousel from "@/components/circular-carousel";
+import { extractYouTubeVideoId } from "./youtube-player";
 
 interface VideoInputProps {
   onVideoSelect: (url: string) => void;
@@ -13,14 +14,24 @@ interface VideoInputProps {
 export function VideoInput({ onVideoSelect }: VideoInputProps) {
   const [url, setUrl] = useState("");
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [error, setError] = useState("");
 
   const handleUrlSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (url) onVideoSelect(url);
+    if (url) {
+      const videoId = extractYouTubeVideoId(url);
+      if (videoId) {
+        setError("");
+        onVideoSelect(url);
+      } else {
+        setError("Please enter a valid YouTube URL");
+      }
+    }
   };
 
   const handleSampleSelect = (id: number, videoUrl: string) => {
     setSelectedId(id);
+    setError("");
     onVideoSelect(videoUrl);
   };
 
@@ -58,14 +69,17 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
         className="relative group"
       >
         <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-          <Youtube className="w-5 h-5 text-muted-foreground group-focus-within:text-red-500 transition-colors" />
+          <Play className="w-5 h-5 text-muted-foreground group-focus-within:text-red-500 transition-colors" />
         </div>
         <input 
           type="text"
           value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder=""
-          className="w-full bg-black/20 border-2 border-white rounded-2xl py-6 pl-12 pr-40 text-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-white focus:ring-2 focus:ring-white/50 transition-all backdrop-blur-sm"
+          onChange={(e) => {
+            setUrl(e.target.value);
+            setError("");
+          }}
+          placeholder="Paste YouTube URL here..."
+          className="w-full bg-black/20 border border-white/10 rounded-2xl py-6 pl-12 pr-40 text-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-white/50 focus:ring-1 focus:ring-white/50 transition-all backdrop-blur-sm"
         />
         <button 
           type="submit"
@@ -73,6 +87,9 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
         >
           Start Watching
         </button>
+        {error && (
+          <p className="absolute -bottom-6 left-0 text-sm text-red-400">{error}</p>
+        )}
       </motion.form>
 
       <div className="flex items-center gap-4">
@@ -89,7 +106,7 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.1 }}
-            onClick={() => handleSampleSelect(video.id, "sample")}
+            onClick={() => handleSampleSelect(video.id, video.videoUrl)}
             className={cn(
               "group relative aspect-video rounded-xl overflow-hidden cursor-pointer border transition-all duration-300",
               selectedId === video.id 

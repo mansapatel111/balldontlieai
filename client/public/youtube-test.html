@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>YouTube IFrame API Test</title>
+    <style>
+      body { 
+        font-family: system-ui, Arial, sans-serif; 
+        padding: 20px; 
+        background: #0a0a0a;
+        color: #fff;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      #player { 
+        margin-top: 20px; 
+        aspect-ratio: 16/9;
+        background: #000;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .controls {
+        margin: 20px 0;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      button { 
+        background: #fff;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      button:hover {
+        background: #e0e0e0;
+      }
+      code { 
+        background: #1a1a1a; 
+        padding: 4px 8px; 
+        border-radius: 6px;
+        border: 1px solid #333;
+      }
+      h2 {
+        margin-bottom: 20px;
+      }
+      #status {
+        padding: 12px;
+        background: #1a1a1a;
+        border-radius: 8px;
+        border: 1px solid #333;
+        margin-top: 20px;
+      }
+      .input-group {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      input {
+        flex: 1;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+      input:focus {
+        outline: none;
+        border-color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>🎥 YouTube IFrame Player API Test</h2>
+
+      <div class="input-group">
+        <input 
+          type="text" 
+          id="videoInput" 
+          placeholder="Enter YouTube URL or video ID (e.g., HxtInYE2WNA)"
+          value="HxtInYE2WNA"
+        />
+        <button onclick="loadVideo()">Load Video</button>
+      </div>
+
+      <div class="controls">
+        <button id="playBtn">▶️ Play</button>
+        <button id="pauseBtn">⏸️ Pause</button>
+        <button id="seekBtn">⏭️ Seek to 30s</button>
+        <span>Current time: <code id="time">0.00</code>s</span>
+      </div>
+
+      <div id="player"></div>
+
+      <div id="status">Loading YouTube API...</div>
+    </div>
+
+    <script>
+      // Extract video ID from URL or return as-is if already an ID
+      function extractVideoId(input) {
+        const patterns = [
+          /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+          /^([a-zA-Z0-9_-]{11})$/
+        ];
+        
+        for (const pattern of patterns) {
+          const match = input.match(pattern);
+          if (match) return match[1];
+        }
+        return input;
+      }
+
+      // Load the IFrame Player API code asynchronously.
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+
+      let player;
+      let timeInterval;
+
+      // This function MUST be on window (global) for the API to call it.
+      window.onYouTubeIframeAPIReady = function () {
+        document.getElementById("status").innerHTML = "✅ API loaded. Creating player...";
+
+        const initialVideoId = extractVideoId(document.getElementById("videoInput").value);
+        
+        player = new YT.Player("player", {
+          videoId: initialVideoId,
+          width: "100%",
+          height: "100%",
+          playerVars: {
+            playsinline: 1,
+            controls: 1,
+            rel: 0,
+            modestbranding: 1
+          },
+          events: {
+            onReady: onPlayerReady,
+            onStateChange: onPlayerStateChange,
+            onError: onPlayerError
+          }
+        });
+      };
+
+      function onPlayerReady() {
+        document.getElementById("status").innerHTML = "✅ Player ready! Use the controls or the YouTube player controls.";
+
+        // Update time 5x/sec
+        timeInterval = setInterval(() => {
+          const t = player.getCurrentTime ? player.getCurrentTime() : 0;
+          document.getElementById("time").textContent = t.toFixed(2);
+        }, 200);
+
+        // Buttons
+        document.getElementById("playBtn").onclick = () => player.playVideo();
+        document.getElementById("pauseBtn").onclick = () => player.pauseVideo();
+        document.getElementById("seekBtn").onclick = () => player.seekTo(30, true);
+      }
+
+      // -1 unstarted, 0 ended, 1 playing, 2 paused, 3 buffering, 5 video cued
+      function onPlayerStateChange(e) {
+        const map = {
+          "-1": "⚪ Unstarted",
+          "0": "🏁 Ended",
+          "1": "▶️ Playing",
+          "2": "⏸️ Paused",
+          "3": "⏳ Buffering",
+          "5": "📺 Cued"
+        };
+        document.getElementById("status").innerHTML = 
+          (map[String(e.data)] || String(e.data)) + " - Player ready";
+      }
+
+      function onPlayerError(e) {
+        const map = {
+          2: "❌ Invalid parameter / videoId",
+          5: "❌ HTML5 player error",
+          100: "❌ Video not found / removed",
+          101: "❌ Embedding disabled by owner",
+          150: "❌ Embedding disabled by owner"
+        };
+        document.getElementById("status").innerHTML = 
+          map[e.data] || ("❌ Error code: " + e.data);
+      }
+
+      // Load new video function
+      function loadVideo() {
+        const input = document.getElementById("videoInput").value;
+        const videoId = extractVideoId(input);
+        
+        if (videoId && player && player.loadVideoById) {
+          player.loadVideoById(videoId);
+          document.getElementById("status").innerHTML = `📺 Loading video: ${videoId}`;
+        } else {
+          document.getElementById("status").innerHTML = "❌ Please enter a valid YouTube URL or video ID";
+        }
+      }
+
+      // Allow Enter key to load video
+      document.getElementById("videoInput").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") loadVideo();
+      });
+    </script>
+  </body>
+</html>
