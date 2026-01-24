@@ -1,40 +1,50 @@
+
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowRight, Play, Sparkles } from "lucide-react";
-import { ShaderAnimation } from "@/components/shader-animation";
+import TextVideoMask from "@/components/text-video-mask";
 import { GlowingShadow } from "@/components/glowing-shadow";
 
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-20 pb-10 overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 z-0">
-        <ShaderAnimation />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background" />
-      </div>
+
+
+
+
+
 
       <div className="container px-4 relative z-10 mx-auto max-w-6xl">
         <div className="flex flex-col items-center text-center">
-          
-          <motion.h1 
+
+          {/* Main Video Mask Title */}
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display italic text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-8 text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 relative whitespace-nowrap"
+            className="w-full max-w-5xl mb-16"
+            style={{ height: '400px' }}
           >
-            BALL DON'T <span className="text-white">LIE</span>
-          </motion.h1>
-
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-white font-display font-bold italic max-w-3xl mb-12 leading-relaxed"
-          >
-            Transform any boring sports clip into high-energy brainrot commentary.
-            <br className="hidden md:block" />
-            Powered by unhinged AI models trained on pure internet chaos.
-          </motion.p>
+            <TextVideoMask
+              useVideoFile={true}
+              videoFile="/nfl.mov"
+              videoUrl=""
+              text="BALL DON'T LIE"
+              font={{
+                fontSize: "110",
+                fontFamily: "Inter",
+                fontWeight: 900,
+                fontStyle: "normal",
+                letterSpacing: "-0.02em",
+                lineHeight: "1",
+              }}
+              textColor="#FFFFFF"
+              backgroundColor="transparent"
+              autoplay={true}
+              loop={true}
+              muted={true}
+            />
+          </motion.div>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -47,7 +57,7 @@ export function Hero() {
                   Start Rotting <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </GlowingShadow>
-            
+
             <button className="px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-display font-bold text-lg backdrop-blur-sm transition-colors flex items-center gap-2 group uppercase">
               <Play className="w-5 h-5 fill-current" />
               Watch Demo

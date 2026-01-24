@@ -3,6 +3,7 @@ import { Youtube, Upload, Play, Check } from "lucide-react";
 import { SAMPLE_VIDEOS } from "@/lib/constants";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import Eyes from "@/components/eyes";
 
 interface VideoInputProps {
   onVideoSelect: (url: string) => void;
@@ -25,7 +26,10 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-display font-bold text-white uppercase italic">Browse or Choose a Classic Game</h2>
+        <div className="flex items-center justify-center gap-4">
+          <h2 className="text-2xl font-display font-bold text-white uppercase italic">Browse or Choose a Classic Game</h2>
+          <Eyes tint="#09F" />
+        </div>
       </div>
 
       {/* URL Input */}
