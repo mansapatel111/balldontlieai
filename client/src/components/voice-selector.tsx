@@ -22,7 +22,7 @@ interface VoiceSelectorProps {
 const VOICES = [
   {
     id: "nicki",
-    title: "Nicki",
+    title: "Nicki Minaj",
     description: "Sassy, fast-paced rap flow with attitude.",
     image: nickiImg,
     preview: "/voices/nicki.mp3"
@@ -43,7 +43,7 @@ const VOICES = [
   },
   {
     id: "james",
-    title: "James",
+    title: "James Charles",
     description: "Hey sisters! Energetic, dramatic makeup guru.",
     image: jamesImg,
     preview: "/voices/james.mp3"
