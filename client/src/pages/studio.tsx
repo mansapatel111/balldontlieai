@@ -4,6 +4,7 @@ import { VibeSelector } from "@/components/vibe-selector";
 import { VoiceSelector } from "@/components/voice-selector";
 import { LiveCommentary } from "@/components/live-commentary";
 import { CyberneticGridShader } from "@/components/cybernetic-grid-shader";
+import { CommentaryShowcase } from "@/components/commentary-showcase";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -46,9 +47,10 @@ export default function Studio() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col items-center justify-center min-h-[60vh]"
+              className="flex flex-col items-center justify-center min-h-[60vh] relative z-10"
             >
               <VideoInput onVideoSelect={handleVideoSelect} />
+              <CommentaryShowcase />
             </motion.div>
           )}
 
@@ -59,10 +61,12 @@ export default function Studio() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col items-center justify-center h-[calc(100vh-140px)] w-full"
+              className="fixed inset-0 z-0 flex flex-col items-center justify-center pt-24 pb-12 px-4"
             >
               <CyberneticGridShader />
-              <VibeSelector selectedVibe={vibeId} onSelect={handleVibeSelect} />
+              <div className="relative z-10 w-full h-full max-w-6xl mx-auto flex flex-col items-center justify-center">
+                <VibeSelector selectedVibe={vibeId} onSelect={handleVibeSelect} />
+              </div>
             </motion.div>
           )}
 
@@ -73,10 +77,12 @@ export default function Studio() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col items-center justify-center h-[calc(100vh-140px)] w-full"
+              className="fixed inset-0 z-0 flex flex-col items-center justify-center pt-24 pb-12 px-4"
             >
               <CyberneticGridShader />
-              <VoiceSelector selectedVoice={voiceId} onSelect={handleVoiceSelect} />
+              <div className="relative z-10 w-full h-full max-w-6xl mx-auto flex flex-col items-center justify-center">
+                <VoiceSelector selectedVoice={voiceId} onSelect={handleVoiceSelect} />
+              </div>
             </motion.div>
           )}
 
@@ -86,6 +92,7 @@ export default function Studio() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
+              className="relative z-10"
             >
               <LiveCommentary vibeId={vibeId} videoUrl={videoUrl} onReset={handleReset} />
             </motion.div>
