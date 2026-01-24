@@ -4,6 +4,7 @@ import { SAMPLE_VIDEOS } from "@/lib/constants";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import Eyes from "@/components/eyes";
+import CircularCarousel from "@/components/circular-carousel";
 
 interface VideoInputProps {
   onVideoSelect: (url: string) => void;
@@ -32,6 +33,23 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
         </div>
       </div>
 
+      {/* 3D Circular Carousel */}
+      <div className="my-12" style={{ height: '400px' }}>
+        <CircularCarousel
+          images={SAMPLE_VIDEOS.map(video => ({
+            src: video.thumbnail,
+            alt: video.title
+          }))}
+          radius={320}
+          itemWidth={260}
+          itemHeight={160}
+          perspective={1200}
+          rotationSpeed={0.18}
+          shaderEffect="none"
+          tiltAngle={-18}
+        />
+      </div>
+
       {/* URL Input */}
       <motion.form 
         initial={{ opacity: 0, y: 10 }}
@@ -51,7 +69,7 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
         />
         <button 
           type="submit"
-          className="absolute right-2 top-2 bottom-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-6 font-display font-bold text-white transition-all active:scale-95 uppercase"
+          className="absolute right-2 top-2 bottom-2 bg-white hover:bg-white/90 border border-white rounded-xl px-6 font-display font-bold text-black transition-all active:scale-95 uppercase shadow-lg"
         >
           Start Watching
         </button>

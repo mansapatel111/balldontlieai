@@ -40,38 +40,38 @@ export const VIBES = [
 export const SAMPLE_VIDEOS = [
   {
     id: 1,
-    title: "LeBron James Dunk Package",
-    thumbnail: "https://images.unsplash.com/photo-1519861531473-92002639313cc?auto=format&fit=crop&q=80&w=800",
-    duration: "0:45"
+    title: "Lakers vs Warriors - 2024 Finals",
+    thumbnail: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&q=80&w=800",
+    duration: "3:45"
   },
   {
     id: 2,
-    title: "Messi Ankle Breaker",
-    thumbnail: "https://images.unsplash.com/photo-1518605348416-725480062586?auto=format&fit=crop&q=80&w=800",
-    duration: "0:32"
+    title: "Mahomes Game-Winning TD",
+    thumbnail: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=800",
+    duration: "2:32"
   },
   {
     id: 3,
-    title: "Valorant Ace Clip",
-    thumbnail: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800",
-    duration: "1:15"
+    title: "Messi World Cup Final Goal",
+    thumbnail: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=800",
+    duration: "4:15"
   },
   {
     id: 4,
-    title: "Speed IShowSpeed Rage",
-    thumbnail: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=800",
-    duration: "2:10"
+    title: "Curry 3-Point Record Night",
+    thumbnail: "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&q=80&w=800",
+    duration: "3:20"
   },
   {
     id: 5,
-    title: "Kai Cenat Rizz Academy",
-    thumbnail: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
-    duration: "1:45"
+    title: "Ohtani 2-Way Dominance",
+    thumbnail: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?auto=format&fit=crop&q=80&w=800",
+    duration: "5:45"
   },
   {
     id: 6,
-    title: "Minecraft Parkour Fail",
-    thumbnail: "https://images.unsplash.com/photo-1627856014759-08522924670d?auto=format&fit=crop&q=80&w=800",
-    duration: "0:55"
+    title: "Djokovic vs Alcaraz US Open",
+    thumbnail: "https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?auto=format&fit=crop&q=80&w=800",
+    duration: "4:55"
   }
 ];
