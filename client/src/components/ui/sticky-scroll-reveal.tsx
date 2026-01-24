@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 export const StickyScroll = ({
   content,
   contentClassName,
+  onSelect,
+  vibes
 }: {
   content: {
     title: string;
@@ -14,6 +16,8 @@ export const StickyScroll = ({
     content?: React.ReactNode | any;
   }[];
   contentClassName?: string;
+  onSelect?: (id: string) => void;
+  vibes?: any[];
 }) => {
   const [activeCard, setActiveCard] = React.useState(0);
   const ref = useRef<any>(null);
@@ -44,12 +48,7 @@ export const StickyScroll = ({
     "transparent", 
     "transparent",
   ];
-  const linearGradients = [
-    "linear-gradient(to bottom right, var(--color-neon-purple), var(--color-neon-blue))",
-    "linear-gradient(to bottom right, var(--color-neon-pink), var(--color-neon-purple))",
-    "linear-gradient(to bottom right, var(--color-neon-green), var(--color-neon-blue))",
-  ];
-
+  
   return (
     <motion.div
       animate={{
@@ -61,7 +60,15 @@ export const StickyScroll = ({
       <div className="div relative flex items-start px-4 w-full lg:w-1/2">
         <div className="max-w-2xl w-full">
           {content.map((item, index) => (
-            <div key={item.title + index} className="my-10 lg:my-20">
+            <div 
+              key={item.title + index} 
+              className="my-10 lg:my-20 cursor-pointer group"
+              onClick={() => {
+                if (onSelect && vibes) {
+                  onSelect(vibes[index].id);
+                }
+              }}
+            >
               <motion.h2
                 initial={{
                   opacity: 0,
@@ -69,7 +76,7 @@ export const StickyScroll = ({
                 animate={{
                   opacity: activeCard === index ? 1 : 0.3,
                 }}
-                className="text-2xl lg:text-3xl font-bold text-white font-display italic tracking-tight uppercase"
+                className="text-2xl lg:text-3xl font-bold text-white font-display italic tracking-tight uppercase group-hover:text-neon-blue transition-colors"
               >
                 {item.title}
               </motion.h2>
@@ -90,9 +97,6 @@ export const StickyScroll = ({
                 "block lg:hidden mt-4 h-60 w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative",
                 contentClassName
               )}>
-                 {/* Only render content for the active card to save resources, or render all if needed. 
-                     Here we render the item's own content if it's the active one, or just a placeholder? 
-                     Actually, let's just render the item's content directly. */}
                  {item.content}
               </div>
             </div>
@@ -102,9 +106,14 @@ export const StickyScroll = ({
       </div>
       <motion.div
         className={cn(
-          "hidden lg:block h-60 w-80 rounded-2xl sticky top-10 overflow-hidden border border-white/10 shadow-2xl",
+          "hidden lg:block h-60 w-80 rounded-2xl sticky top-10 overflow-hidden border border-white/10 shadow-2xl cursor-pointer hover:scale-105 transition-transform duration-300",
           contentClassName
         )}
+        onClick={() => {
+          if (onSelect && vibes) {
+            onSelect(vibes[activeCard].id);
+          }
+        }}
       >
         {content[activeCard].content ?? null}
       </motion.div>
