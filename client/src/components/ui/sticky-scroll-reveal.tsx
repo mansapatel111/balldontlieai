@@ -10,7 +10,7 @@ export const StickyScroll = ({
 }: {
   content: {
     title: string;
-    description: string;
+    description: string | React.ReactNode;
     content?: React.ReactNode | any;
   }[];
   contentClassName?: string;
@@ -55,13 +55,13 @@ export const StickyScroll = ({
       animate={{
         backgroundColor: backgroundColors[activeCard % backgroundColors.length],
       }}
-      className="h-[30rem] overflow-y-auto flex justify-center relative space-x-10 rounded-2xl border border-white/10 bg-black/20 backdrop-blur-sm p-10 no-scrollbar"
+      className="h-[30rem] overflow-y-auto flex flex-col lg:flex-row justify-center relative space-x-0 lg:space-x-10 rounded-2xl border border-white/10 bg-black/20 backdrop-blur-sm p-6 lg:p-10 no-scrollbar"
       ref={ref}
     >
-      <div className="div relative flex items-start px-4">
-        <div className="max-w-2xl">
+      <div className="div relative flex items-start px-4 w-full lg:w-1/2">
+        <div className="max-w-2xl w-full">
           {content.map((item, index) => (
-            <div key={item.title + index} className="my-20">
+            <div key={item.title + index} className="my-10 lg:my-20">
               <motion.h2
                 initial={{
                   opacity: 0,
@@ -69,24 +69,35 @@ export const StickyScroll = ({
                 animate={{
                   opacity: activeCard === index ? 1 : 0.3,
                 }}
-                className="text-3xl font-bold text-white font-display italic tracking-tight uppercase"
+                className="text-2xl lg:text-3xl font-bold text-white font-display italic tracking-tight uppercase"
               >
                 {item.title}
               </motion.h2>
-              <motion.p
+              <motion.div
                 initial={{
                   opacity: 0,
                 }}
                 animate={{
                   opacity: activeCard === index ? 1 : 0.3,
                 }}
-                className="text-xl text-white/80 max-w-sm mt-4 font-display leading-relaxed"
+                className="text-lg lg:text-xl text-white/80 max-w-sm mt-4 font-display leading-relaxed"
               >
                 {item.description}
-              </motion.p>
+              </motion.div>
+              
+              {/* Mobile Content View */}
+              <div className={cn(
+                "block lg:hidden mt-4 h-60 w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative",
+                contentClassName
+              )}>
+                 {/* Only render content for the active card to save resources, or render all if needed. 
+                     Here we render the item's own content if it's the active one, or just a placeholder? 
+                     Actually, let's just render the item's content directly. */}
+                 {item.content}
+              </div>
             </div>
           ))}
-          <div className="h-40" />
+          <div className="h-20 lg:h-40" />
         </div>
       </div>
       <motion.div

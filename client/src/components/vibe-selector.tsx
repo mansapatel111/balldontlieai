@@ -7,7 +7,17 @@ export function VibeSelector({ selectedVibe, onSelect }: { selectedVibe: string 
     const Icon = (Icons as any)[vibe.icon];
     return {
       title: vibe.title,
-      description: vibe.description,
+      description: (
+        <div className="flex flex-col gap-4 items-start">
+          <p>{vibe.description}</p>
+          <button 
+            onClick={() => onSelect(vibe.id)}
+            className="lg:hidden px-6 py-2 bg-white text-black font-display font-bold italic uppercase rounded-full hover:scale-105 transition-transform shadow-lg"
+          >
+            Select
+          </button>
+        </div>
+      ),
       content: (
         <div 
           className="h-full w-full flex items-center justify-center text-white cursor-pointer group transition-all relative overflow-hidden"
@@ -22,7 +32,7 @@ export function VibeSelector({ selectedVibe, onSelect }: { selectedVibe: string 
                 {Icon && <Icon className="w-12 h-12 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" />}
              </div>
              
-             <button className="px-6 py-2 bg-white text-black font-display font-bold italic uppercase rounded-full hover:scale-105 transition-transform shadow-lg">
+             <button className="hidden lg:block px-6 py-2 bg-white text-black font-display font-bold italic uppercase rounded-full hover:scale-105 transition-transform shadow-lg">
                Select
              </button>
           </div>
