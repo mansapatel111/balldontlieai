@@ -3,6 +3,14 @@ import { useState, useEffect, useRef } from "react";
 import { VIBES } from "@/lib/constants";
 import { Play, Pause, SkipBack, Volume2, Share2, Download, RefreshCw } from "lucide-react";
 
+// Declare YouTube IFrame API types
+declare global {
+  interface Window {
+    YT: any;
+    onYouTubeIframeAPIReady: () => void;
+  }
+}
+
 interface LiveCommentaryProps {
   vibeId: string;
   videoUrl: string;
@@ -15,6 +23,8 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
   const [transcript, setTranscript] = useState<string[]>([]);
   const vibe = VIBES.find(v => v.id === vibeId);
   const containerRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<any>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Extract YouTube video ID from URL
   const getYouTubeId = (url: string) => {
@@ -25,6 +35,65 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
   };
 
   const youtubeId = getYouTubeId(videoUrl);
+
+  // Load YouTube IFrame API
+  useEffect(() => {
+    if (!youtubeId) return;
+
+    // Load the IFrame Player API code asynchronously
+    if (!window.YT) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+    }
+
+    // Initialize player when API is ready
+    const initPlayer = () => {
+      if (window.YT && window.YT.Player) {
+        playerRef.current = new window.YT.Player('youtube-player', {
+          videoId: youtubeId,
+          playerVars: {
+            autoplay: 0,
+            controls: 1,
+            rel: 0,
+            modestbranding: 1,
+            mute: 1,
+          },
+        });
+      }
+    };
+
+    if (window.YT && window.YT.Player) {
+      initPlayer();
+    } else {
+      window.onYouTubeIframeAPIReady = initPlayer;
+    }
+
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.destroy();
+      }
+    };
+  }, [youtubeId]);
+
+  // Handle play/pause sync
+  const togglePlayPause = () => {
+    if (!playerRef.current) return;
+
+    if (isPlaying) {
+      playerRef.current.pauseVideo();
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    } else {
+      playerRef.current.playVideo();
+      if (audioRef.current) {
+        audioRef.current.play();
+      }
+    }
+    setIsPlaying(!isPlaying);
+  };
 
   // Fake commentary generation simulation
   useEffect(() => {
@@ -58,18 +127,17 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
 
   return (
     <div className="w-full h-[calc(100vh-100px)] grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Hidden audio element for AI voiceover */}
+      <audio ref={audioRef} style={{ display: 'none' }} />
+      
       {/* Main Player Area */}
       <div className="lg:col-span-2 flex flex-col gap-4 h-full">
-        <div className="relative flex-1 bg-black/40 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
+        <div className="relative flex-1 bg-black/40 rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
           {/* YouTube Video Player */}
           {youtubeId ? (
-            <iframe
-              className="absolute inset-0 w-full h-full"
-              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0&controls=1&rel=0`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
+            <div 
+              id="youtube-player"
+              className="absolute inset-0 w-full h-full rounded-3xl"
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-zinc-900">
@@ -80,34 +148,30 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
               </span>
             </div>
           )}
-
-          {/* Controls Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="w-full h-1 bg-white/20 rounded-full mb-4 cursor-pointer overflow-hidden">
-              <motion.div 
-                className="h-full bg-neon-purple"
-                style={{ width: `${progress}%` }} 
-              />
+        </div>
+        
+        {/* Video Info Bar */}
+        <div className="bg-black/40 backdrop-blur-md border border-white/10 p-4 rounded-2xl flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={togglePlayPause}
+              className="w-10 h-10 rounded-full bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center hover:scale-105 transition-transform"
+            >
+              {isPlaying ? <Pause className="w-5 h-5 text-white fill-current" /> : <Play className="w-5 h-5 text-white fill-current ml-0.5" />}
+            </button>
+            <div>
+              <h3 className="font-display font-bold text-white text-sm">Now Playing</h3>
+              <p className="text-xs text-muted-foreground font-mono">{vibe?.title} Mode Active</p>
             </div>
-            
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <button 
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform"
-                >
-                  {isPlaying ? <Pause className="fill-current w-5 h-5" /> : <Play className="fill-current w-5 h-5 ml-1" />}
-                </button>
-                <div className="text-white font-mono text-sm">00:{Math.floor(progress).toString().padStart(2, '0')} / 01:30</div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <Volume2 className="text-white w-5 h-5" />
-                <div className="w-24 h-1 bg-white/20 rounded-full">
-                  <div className="w-2/3 h-full bg-white rounded-full" />
-                </div>
-              </div>
-            </div>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <button className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-colors">
+              <Share2 className="w-4 h-4" />
+            </button>
+            <button className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-colors">
+              <Download className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>
