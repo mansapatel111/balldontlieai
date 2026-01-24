@@ -1,39 +1,36 @@
+
 export const VIBES = [
-  {
-    id: "rizz-lord",
-    title: "Rizz Lord",
-    description: "Vibe: Confident, smooth, unbothered.\nExplains sports like everything is effortless and elite. Big plays aren’t surprising—they’re expected. Every move has swagger, every win is inevitable. Perfect if you want hype without chaos.",
-    color: "var(--color-neon-purple)",
-    gradient: "from-purple-600 to-indigo-600",
-    icon: "Crown",
-    emoji: "😎"
-  },
-  {
-    id: "groupchat-bestie",
-    title: "Group Chat Bestie",
-    description: "Vibe: Emotional, chaotic, instantly invested.\nExplains sports like you’re watching with your friends who barely know the rules but are VERY loud about it. Reacts first, explains second, and makes every moment feel personal.",
-    color: "var(--color-neon-green)",
-    gradient: "from-emerald-400 to-teal-600",
-    icon: "MessageCircleHeart",
-    emoji: "💬"
-  },
   {
     id: "pop-culture-girlie",
     title: "Pop Culture Girlie",
-    description: "Vibe: Main-character energy, chronically online.\nExplains sports using pop culture, celebrity, and internet metaphors. Turns plays into storylines, eras, and iconic moments. Great if you want sports explained in a fun, relatable way.",
+    description: "Chronically online, knows every trend, speaks in stan twitter.",
     color: "var(--color-neon-pink)",
     gradient: "from-pink-500 to-rose-600",
-    icon: "Sparkles",
-    emoji: "💅"
+    icon: "Sparkles"
+  },
+  {
+    id: "rizz-lord",
+    title: "Rizz Lord",
+    description: "Charismatic, meme-heavy, Ohio-coded smooth operator.",
+    color: "var(--color-neon-purple)",
+    gradient: "from-purple-600 to-indigo-600",
+    icon: "Crown"
+  },
+  {
+    id: "groupchat-bestie",
+    title: "Groupchat Bestie",
+    description: "Supportive, chaotic, uses way too many emojis and caps.",
+    color: "var(--color-neon-green)",
+    gradient: "from-emerald-400 to-teal-600",
+    icon: "MessageCircleHeart"
   },
   {
     id: "frat-bro",
     title: "Frat Bro",
-    description: "Vibe: Loud, confident, zero hesitation.\nExplains sports in the simplest way possible. No overthinking—just dominance, momentum, and vibes. If it worked, it worked. If it didn’t, someone sold.",
+    description: "Hype man energy, calls everything 'electric', lives for the boys.",
     color: "var(--color-neon-blue)",
     gradient: "from-blue-600 to-cyan-600",
-    icon: "Beer",
-    emoji: "🍻"
+    icon: "Beer"
   }
 ];
 
