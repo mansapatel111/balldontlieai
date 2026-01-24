@@ -3,9 +3,12 @@ import { Mic, Volume2, Sparkles, Wand2, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useSound from "use-sound";
 import { GlareCard } from "@/components/ui/glare-card";
+// @ts-ignore
 import { Splide, SplideSlide } from '@splidejs/react-splide';
+// @ts-ignore
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
 import '@splidejs/react-splide/css';
+import { useState, useEffect } from "react";
 
 // Import voice images
 import nickiImg from "@/assets/voices/nicki.png";
@@ -19,46 +22,70 @@ interface VoiceSelectorProps {
   onSelect: (id: string) => void;
 }
 
-const VOICES = [
+interface Voice {
+  id: string;
+  name: string;
+  description: string;
+  category?: string;
+  labels?: any;
+  image?: string;
+}
+
+// Fallback voices if API fails
+const FALLBACK_VOICES = [
   {
-    id: "nicki",
-    title: "Nicki Minaj",
-    description: "Sassy, fast-paced rap flow with attitude.",
+    id: "21m00Tcm4TlvDq8ikWAM",
+    name: "Rachel",
+    description: "Natural, clear American female voice",
     image: nickiImg,
-    preview: "/voices/nicki.mp3"
   },
   {
-    id: "spongebob",
-    title: "Spongebob",
-    description: "High-pitched, enthusiastic, nautical nonsense.",
+    id: "EXAVITQu4vr4xnSDxMaL",
+    name: "Bella",
+    description: "Young, engaging American female voice",
     image: spongebobImg,
-    preview: "/voices/spongebob.mp3"
   },
   {
-    id: "ghostface",
-    title: "Ghostface",
-    description: "Menacing, raspy, horror-movie chiller.",
+    id: "MF3mGyEYCl7XYWbV9V6O",
+    name: "Elli",
+    description: "Emotional, youthful American female voice",
     image: ghostfaceImg,
-    preview: "/voices/ghostface.mp3"
   },
   {
-    id: "james",
-    title: "James Charles",
-    description: "Hey sisters! Energetic, dramatic makeup guru.",
+    id: "TxGEqnHWrfWFTfGW9XjX",
+    name: "Josh",
+    description: "Deep, young American male voice",
     image: jamesImg,
-    preview: "/voices/james.mp3"
   },
-  {
-    id: "random",
-    title: "Random Celeb",
-    description: "Feeling lucky? Let fate decide the narrator.",
-    image: randomImg,
-    preview: "/voices/random.mp3"
-  }
 ];
 
 export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
   const [playHover] = useSound("/sounds/hover.mp3", { volume: 0.5 });
+  const [voices, setVoices] = useState<Voice[]>(FALLBACK_VOICES);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchVoices = async () => {
+      try {
+        const response = await fetch('/api/voices');
+        if (response.ok) {
+          const data = await response.json();
+          // Map to add default images
+          const voicesWithImages = data.voices.map((voice: Voice, index: number) => ({
+            ...voice,
+            image: [nickiImg, spongebobImg, ghostfaceImg, jamesImg, randomImg][index % 5],
+          }));
+          setVoices(voicesWithImages);
+        }
+      } catch (error) {
+        console.error('Failed to fetch voices, using fallback:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchVoices();
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
@@ -98,7 +125,7 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
           extensions={{ AutoScroll }}
           className="w-full py-8"
         >
-          {VOICES.map((voice) => {
+          {voices.map((voice) => {
             const isSelected = selectedVoice === voice.id;
 
             return (
@@ -115,14 +142,14 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
                     <GlareCard className="flex flex-col items-center justify-end pb-8">
                       <img 
                         src={voice.image} 
-                        alt={voice.title}
+                        alt={voice.name}
                         className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
                       
                       <div className="relative z-10 text-center px-4">
                         <h3 className="text-2xl font-bold text-white font-display uppercase italic tracking-wider mb-2 drop-shadow-lg">
-                          {voice.title}
+                          {voice.name}
                         </h3>
                         <p className="text-white/80 text-xs font-medium max-w-[200px] mx-auto leading-relaxed drop-shadow-md">
                           {voice.description}

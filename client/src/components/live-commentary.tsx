@@ -3,21 +3,14 @@ import { useState, useEffect, useRef } from "react";
 import { VIBES } from "@/lib/constants";
 import { Play, Pause, SkipBack, Volume2, Share2, Download, RefreshCw, Loader2 } from "lucide-react";
 
-// Declare YouTube IFrame API types
-declare global {
-  interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
-
 interface LiveCommentaryProps {
   vibeId: string;
   videoUrl: string;
+  voiceId: string | null;
   onReset: () => void;
 }
 
-export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProps) {
+export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveCommentaryProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [transcript, setTranscript] = useState<string[]>([]);
@@ -114,14 +107,18 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
           body: JSON.stringify({
             videoId: youtubeId,
             personality: vibeId,
+            voiceId: voiceId,
           }),
         });
 
         if (!response.ok) {
-          throw new Error(`API request failed: ${response.statusText}`);
+          const errorText = await response.text();
+          console.error('API Error Response:', errorText);
+          throw new Error(`API request failed: ${response.statusText} - ${errorText}`);
         }
 
         const data = await response.json();
+        console.log('API Response:', data);
         
         // Set the audio source
         if (data.audioUrl && audioRef.current) {

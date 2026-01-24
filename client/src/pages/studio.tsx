@@ -119,7 +119,7 @@ export default function Studio() {
               transition={{ duration: 0.5 }}
               className="relative z-10"
             >
-              <LiveCommentary vibeId={vibeId} videoUrl={videoUrl} onReset={handleReset} />
+              <LiveCommentary vibeId={vibeId} videoUrl={videoUrl} voiceId={voiceId} onReset={handleReset} />
             </motion.div>
           )}
         </AnimatePresence>
