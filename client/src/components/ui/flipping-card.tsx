@@ -42,7 +42,25 @@ export function FlippingCard({
             {frontContent}
           </div>
            {/* Subtle holographic overlay for front */}
-           <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
+           <div 
+             className="absolute inset-0 z-20 opacity-0 transition-opacity duration-300 group-hover/flipping-card:opacity-100 pointer-events-none"
+             style={{
+               background: `
+                 radial-gradient(
+                   circle at 50% 50%,
+                   rgba(255, 255, 255, 0.1) 0%,
+                   transparent 80%
+                 )
+               `,
+             }}
+           />
+           <div 
+             className="absolute inset-0 z-30 opacity-0 transition-opacity duration-300 group-hover/flipping-card:opacity-40 mix-blend-color-dodge pointer-events-none"
+             style={{
+                 background: "linear-gradient(135deg, rgba(255,0,0,0.5), rgba(0,255,0,0.5), rgba(0,0,255,0.5), rgba(255,0,255,0.5), rgba(255,255,0,0.5), rgba(0,255,255,0.5))",
+                 filter: "blur(20px)",
+             }}
+           />
         </div>
         
         {/* Back Face */}
@@ -51,7 +69,25 @@ export function FlippingCard({
             {backContent}
           </div>
            {/* Subtle holographic overlay for back */}
-           <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent pointer-events-none" />
+           <div 
+             className="absolute inset-0 z-20 opacity-0 transition-opacity duration-300 group-hover/flipping-card:opacity-100 pointer-events-none"
+             style={{
+               background: `
+                 radial-gradient(
+                   circle at 50% 50%,
+                   rgba(255, 255, 255, 0.1) 0%,
+                   transparent 80%
+                 )
+               `,
+             }}
+           />
+           <div 
+             className="absolute inset-0 z-30 opacity-0 transition-opacity duration-300 group-hover/flipping-card:opacity-40 mix-blend-color-dodge pointer-events-none"
+             style={{
+                 background: "linear-gradient(135deg, rgba(255,0,0,0.5), rgba(0,255,0,0.5), rgba(0,0,255,0.5), rgba(255,0,255,0.5), rgba(255,255,0,0.5), rgba(0,255,255,0.5))",
+                 filter: "blur(20px)",
+             }}
+           />
         </div>
       </div>
     </div>

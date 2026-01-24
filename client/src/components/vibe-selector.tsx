@@ -44,8 +44,8 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
               onMouseEnter={() => playHover()}
             >
               <FlippingCard 
-                width={400}
-                height={250}
+                width={450}
+                height={280}
                 className={cn(
                   "cursor-pointer",
                   isSelected && "ring-4 ring-primary rounded-xl"
@@ -106,10 +106,6 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
                     <p className="text-lg text-white/90 font-medium leading-relaxed">
                       {vibe.description}
                     </p>
-
-                    <div className="mt-6 text-primary text-sm font-bold uppercase tracking-widest flex items-center gap-2">
-                        Click to Select <Icons.ArrowRight className="w-4 h-4" />
-                    </div>
                   </div>
                 }
               />
