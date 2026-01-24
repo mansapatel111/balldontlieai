@@ -1,69 +1,70 @@
 import { motion } from "framer-motion";
-import { Mic, Volume2, Sparkles, Wand2 } from "lucide-react";
+import { Trophy, Globe, Activity, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useSound from "use-sound";
 
-interface VoiceSelectorProps {
-  selectedVoice: string | null;
+interface SportSelectorProps {
+  selectedSport: string | null;
   onSelect: (id: string) => void;
 }
 
-const VOICES = [
+const SPORTS = [
   {
-    id: "adam",
-    title: "Adam",
-    description: "Deep, resonant, authoritative but chill.",
-    icon: "Mic",
-    preview: "/voices/adam.mp3",
-    features: ["Deep Tone", "Steady Pace", "Authoritative"]
+    id: "basketball",
+    title: "Basketball",
+    description: "Hoops, dunks, and ankle breakers.",
+    price: "FREE",
+    features: ["Court vision analysis", "Dunk ratings", "Crossover detection"],
+    icon: "Trophy"
   },
   {
-    id: "charlie",
-    title: "Charlie",
-    description: "High energy, fast-paced, excitement overload.",
-    icon: "Volume2",
-    preview: "/voices/charlie.mp3",
-    features: ["Fast Pace", "High Energy", "Excited"]
+    id: "soccer",
+    title: "Soccer",
+    description: "The beautiful game's ugly moments.",
+    price: "FREE",
+    features: ["Flop detection", "Offside roasts", "Goal celebrations"],
+    icon: "Globe"
   },
   {
-    id: "bella",
-    title: "Bella",
-    description: "Sassy, sharp, clear articulation with attitude.",
-    icon: "Sparkles",
-    preview: "/voices/bella.mp3",
-    features: ["Sassy Tone", "Sharp Diction", "Attitude"]
+    id: "football",
+    title: "Football",
+    description: "Gridiron gladiator fails.",
+    price: "FREE",
+    features: ["Touchdown dances", "Fumble analysis", "Hail Mary commentary"],
+    icon: "Activity"
   },
   {
-    id: "drake",
-    title: "Drake",
-    description: "Smooth, melodic, laid back flow.",
-    icon: "Wand2",
-    preview: "/voices/drake.mp3",
-    features: ["Melodic", "Laid Back", "Smooth"]
+    id: "hockey",
+    title: "Hockey",
+    description: "Ice cold hits and misses.",
+    price: "FREE",
+    features: ["Fight commentary", "Slapshot analysis", "Goalie roasts"],
+    icon: "Target"
   }
 ];
 
-export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
+export function SportSelector({ selectedSport, onSelect }: SportSelectorProps) {
   const [playHover] = useSound("/sounds/hover.mp3", { volume: 0.5 });
 
   return (
     <div className="w-full max-w-5xl mx-auto h-full flex flex-col items-center">
       <div className="text-center space-y-2 mb-12 flex-shrink-0">
-        <h2 className="text-3xl font-display font-bold text-white uppercase italic tracking-tight">Select Your Voice</h2>
-        <p className="text-white/60 font-display text-lg">Who should narrate the chaos?</p>
+        <h2 className="text-3xl font-display font-bold text-white uppercase italic tracking-tight">Pick Your Game</h2>
+        <p className="text-white/60 font-display text-lg">What sport are we roasting today?</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-        {VOICES.map((voice, idx) => {
-          const isSelected = selectedVoice === voice.id;
+        {SPORTS.map((sport, idx) => {
+          const isSelected = selectedSport === sport.id;
+          const Icon = sport.id === "basketball" ? Trophy : sport.id === "soccer" ? Globe : sport.id === "football" ? Activity : Target;
 
           return (
             <motion.div
-              key={voice.id}
+              key={sport.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
-              onClick={() => onSelect(voice.id)}
+              onClick={() => onSelect(sport.id)}
               onMouseEnter={() => playHover()}
               className={cn(
                 "relative rounded-xl border-2 p-6 transition-all duration-200 cursor-pointer backdrop-blur-md",
@@ -72,30 +73,32 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
                   : "border-white/10 bg-black/40 hover:border-white/50 hover:bg-black/60"
               )}
             >
-               <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-4">
                     <div className={cn(
-                        "w-12 h-12 rounded-full flex items-center justify-center border transition-colors",
-                         isSelected ? "bg-white text-black border-transparent" : "bg-white/5 text-white/70 border-white/10"
+                        "w-12 h-12 rounded-full flex items-center justify-center border",
+                         isSelected ? "bg-white text-black border-white" : "bg-white/5 text-white/70 border-white/10"
                     )}>
-                        {voice.id === "adam" && <Mic className="w-6 h-6" />}
-                        {voice.id === "charlie" && <Volume2 className="w-6 h-6" />}
-                        {voice.id === "bella" && <Sparkles className="w-6 h-6" />}
-                        {voice.id === "drake" && <Wand2 className="w-6 h-6" />}
+                        <Icon className="w-6 h-6" />
                     </div>
                     <div>
                         <h3 className="text-xl font-bold text-white">
-                            {voice.title}
+                            {sport.title}
                         </h3>
                         <p className="text-sm text-white/60">
-                            {voice.description}
+                            {sport.description}
                         </p>
                     </div>
                 </div>
+                <div className="text-right">
+                    <span className="text-xl font-bold text-white">
+                        {sport.price}
+                    </span>
+                </div>
               </div>
 
-               <ul className="space-y-2">
-                {voice.features.map((feature, index) => (
+              <ul className="space-y-2 mb-2">
+                {sport.features.map((feature, index) => (
                   <li
                     key={index}
                     className="flex items-center text-sm text-white/70"
@@ -130,4 +133,3 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
     </div>
   );
 }
-
