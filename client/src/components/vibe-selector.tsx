@@ -1,14 +1,12 @@
-import { motion } from "framer-motion";
 import { StickyScroll } from "@/components/ui/sticky-scroll-reveal";
 import { VIBES } from "@/lib/constants";
 import * as Icons from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export function VibeSelector({ selectedVibe, onSelect }: { selectedVibe: string | null, onSelect: (id: string) => void }) {
   const content = VIBES.map((vibe) => {
     const Icon = (Icons as any)[vibe.icon];
     return {
-      title: vibe.title,
+      title: vibe.emoji + " " + vibe.title,
       description: vibe.description,
       content: (
         <div 
@@ -23,8 +21,9 @@ export function VibeSelector({ selectedVibe, onSelect }: { selectedVibe: string 
              <div className="w-24 h-24 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-xl group-hover:scale-110 transition-transform duration-300">
                 {Icon && <Icon className="w-12 h-12 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" />}
              </div>
-             
-             {/* No Button */}
+             <p className="font-display font-bold italic text-lg uppercase tracking-widest text-white/90">
+               Click to Select
+             </p>
           </div>
         </div>
       ),

@@ -1,35 +1,39 @@
 export const VIBES = [
   {
-    id: "pop-culture-girlie",
-    title: "Pop Culture Girlie",
-    description: "Chronically online, fluent in stan Twitter, smells a flop from miles away.",
-    color: "var(--color-neon-pink)",
-    gradient: "from-pink-500 to-rose-600",
-    icon: "Sparkles"
-  },
-  {
     id: "rizz-lord",
     title: "Rizz Lord",
-    description: "Ohio-coded charisma, speaks in memes, accidentally pulls every time.",
+    description: "Vibe: Confident, smooth, unbothered.\nExplains sports like everything is effortless and elite. Big plays aren’t surprising—they’re expected. Every move has swagger, every win is inevitable. Perfect if you want hype without chaos.",
     color: "var(--color-neon-purple)",
     gradient: "from-purple-600 to-indigo-600",
-    icon: "Crown"
+    icon: "Crown",
+    emoji: "😎"
   },
   {
     id: "groupchat-bestie",
-    title: "Groupchat Bestie",
-    description: "Supportive chaos, CAPS + emojis, knows all the tea.",
+    title: "Group Chat Bestie",
+    description: "Vibe: Emotional, chaotic, instantly invested.\nExplains sports like you’re watching with your friends who barely know the rules but are VERY loud about it. Reacts first, explains second, and makes every moment feel personal.",
     color: "var(--color-neon-green)",
     gradient: "from-emerald-400 to-teal-600",
-    icon: "MessageCircleHeart"
+    icon: "MessageCircleHeart",
+    emoji: "💬"
+  },
+  {
+    id: "pop-culture-girlie",
+    title: "Pop Culture Girlie",
+    description: "Vibe: Main-character energy, chronically online.\nExplains sports using pop culture, celebrity, and internet metaphors. Turns plays into storylines, eras, and iconic moments. Great if you want sports explained in a fun, relatable way.",
+    color: "var(--color-neon-pink)",
+    gradient: "from-pink-500 to-rose-600",
+    icon: "Sparkles",
+    emoji: "💅"
   },
   {
     id: "frat-bro",
     title: "Frat Bro",
-    description: "Hype man, zero thoughts, everything is electric.",
+    description: "Vibe: Loud, confident, zero hesitation.\nExplains sports in the simplest way possible. No overthinking—just dominance, momentum, and vibes. If it worked, it worked. If it didn’t, someone sold.",
     color: "var(--color-neon-blue)",
     gradient: "from-blue-600 to-cyan-600",
-    icon: "Beer"
+    icon: "Beer",
+    emoji: "🍻"
   }
 ];
 
