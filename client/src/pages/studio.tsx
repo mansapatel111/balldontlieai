@@ -1,15 +1,17 @@
 import { Layout } from "@/components/layout";
 import { VideoInput } from "@/components/video-input";
 import { VibeSelector } from "@/components/vibe-selector";
+import { VoiceSelector } from "@/components/voice-selector";
 import { LiveCommentary } from "@/components/live-commentary";
 import { CyberneticGridShader } from "@/components/cybernetic-grid-shader";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Studio() {
-  const [step, setStep] = useState<"upload" | "vibe" | "live">("upload");
+  const [step, setStep] = useState<"upload" | "vibe" | "voice" | "live">("upload");
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [vibeId, setVibeId] = useState<string | null>(null);
+  const [voiceId, setVoiceId] = useState<string | null>(null);
 
   const handleVideoSelect = (url: string) => {
     setVideoUrl(url);
@@ -18,6 +20,11 @@ export default function Studio() {
 
   const handleVibeSelect = (id: string) => {
     setVibeId(id);
+    setStep("voice");
+  };
+
+  const handleVoiceSelect = (id: string) => {
+    setVoiceId(id);
     setStep("live");
   };
 
@@ -25,6 +32,7 @@ export default function Studio() {
     setStep("upload");
     setVideoUrl(null);
     setVibeId(null);
+    setVoiceId(null);
   };
 
   return (
@@ -55,6 +63,20 @@ export default function Studio() {
             >
               <CyberneticGridShader />
               <VibeSelector selectedVibe={vibeId} onSelect={handleVibeSelect} />
+            </motion.div>
+          )}
+
+          {step === "voice" && (
+            <motion.div
+              key="voice"
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.3 }}
+              className="flex flex-col items-center justify-center h-[calc(100vh-140px)] w-full"
+            >
+              <CyberneticGridShader />
+              <VoiceSelector selectedVoice={voiceId} onSelect={handleVoiceSelect} />
             </motion.div>
           )}
 
