@@ -105,11 +105,11 @@ export function Hero() {
                 className="absolute top-1/3 right-[15%] bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-48 hidden lg:block z-0"
              >
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-mono text-green-400">TRANSCRIPT LIVE</span>
+                  <span className="text-xs font-mono text-pink-400">VIBE CHECK</span>
                   <div className="flex gap-1">
-                    <span className="w-1 h-3 bg-green-400 animate-pulse" />
-                    <span className="w-1 h-2 bg-green-400 animate-pulse delay-75" />
-                    <span className="w-1 h-4 bg-green-400 animate-pulse delay-150" />
+                    <span className="w-1 h-3 bg-pink-400 animate-pulse" />
+                    <span className="w-1 h-2 bg-pink-400 animate-pulse delay-75" />
+                    <span className="w-1 h-4 bg-pink-400 animate-pulse delay-150" />
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground font-mono">
@@ -123,11 +123,11 @@ export function Hero() {
                 className="absolute bottom-1/3 left-[15%] bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-52 hidden lg:block z-0"
              >
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-mono text-green-400">TRANSCRIPT LIVE</span>
+                  <span className="text-xs font-mono text-red-500">SYSTEM ALERT</span>
                   <div className="flex gap-1">
-                    <span className="w-1 h-3 bg-green-400 animate-pulse" />
-                    <span className="w-1 h-2 bg-green-400 animate-pulse delay-75" />
-                    <span className="w-1 h-4 bg-green-400 animate-pulse delay-150" />
+                    <span className="w-1 h-3 bg-red-500 animate-pulse" />
+                    <span className="w-1 h-2 bg-red-500 animate-pulse delay-75" />
+                    <span className="w-1 h-4 bg-red-500 animate-pulse delay-150" />
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground font-mono">
