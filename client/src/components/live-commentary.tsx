@@ -16,6 +16,16 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
   const vibe = VIBES.find(v => v.id === vibeId);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Extract YouTube video ID from URL
+  const getYouTubeId = (url: string) => {
+    if (url === "sample") return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+  const youtubeId = getYouTubeId(videoUrl);
+
   // Fake commentary generation simulation
   useEffect(() => {
     if (!isPlaying) return;
@@ -51,14 +61,25 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
       {/* Main Player Area */}
       <div className="lg:col-span-2 flex flex-col gap-4 h-full">
         <div className="relative flex-1 bg-black/40 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
-          {/* Mock Video Player */}
-          <div className="absolute inset-0 flex items-center justify-center bg-zinc-900">
-            {/* Placeholder Image representing video */}
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 to-purple-900/20" />
-            <span className="font-mono text-white/20 text-4xl font-bold uppercase tracking-widest animate-pulse">
-              Video Stream Source
-            </span>
-          </div>
+          {/* YouTube Video Player */}
+          {youtubeId ? (
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0&controls=1&rel=0`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-zinc-900">
+              {/* Placeholder when no video */}
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/20 to-purple-900/20" />
+              <span className="font-mono text-white/20 text-4xl font-bold uppercase tracking-widest animate-pulse">
+                No Video Selected
+              </span>
+            </div>
+          )}
 
           {/* Controls Overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
