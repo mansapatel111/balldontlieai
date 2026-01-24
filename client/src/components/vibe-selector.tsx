@@ -4,6 +4,7 @@ import * as Icons from "lucide-react";
 import { cn } from "@/lib/utils";
 import useSound from "use-sound";
 import { FlippingCard } from "@/components/ui/flipping-card";
+import { GlowingShadow } from "@/components/ui/glowing-shadow";
 
 interface VibeSelectorProps {
   selectedVibe: string | null;
@@ -43,72 +44,75 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
               }}
               onMouseEnter={() => playHover()}
             >
-              <FlippingCard 
-                width={450}
-                height={280}
-                className={cn(
-                  "cursor-pointer",
-                  isSelected && "ring-4 ring-primary rounded-xl"
-                )}
-                onClick={() => {
-                  playSelect();
-                  onSelect(vibe.id);
-                }}
-                frontContent={
-                  <div className="flex flex-col items-center justify-center h-full p-8 relative">
-                     {/* Ambient Glow */}
-                     <div 
-                        className={cn(
-                            "absolute inset-0 opacity-20 blur-3xl transition-colors duration-500 -z-10",
-                        )}
-                        style={{
-                            background: `radial-gradient(circle at center, ${vibe.color}, transparent 70%)`
-                        }}
-                    />
-                    
-                    <div className={cn(
-                      "p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md mb-4 shadow-xl",
-                      isSelected ? "text-primary border-primary/50" : "text-white"
-                    )}>
-                      {Icon && <Icon className="w-12 h-12" />}
-                    </div>
-                    
-                    <h3 className={cn(
-                      "text-4xl font-display font-bold uppercase italic tracking-wide text-center",
-                      isSelected ? "text-white text-glow" : "text-white/90"
-                    )}>
-                      {vibe.title}
-                    </h3>
-
-                    {isSelected && (
-                        <div className="mt-4 px-4 py-1 rounded-full bg-primary text-black text-sm font-bold uppercase tracking-wider animate-pulse">
-                            Selected
-                        </div>
+              <GlowingShadow className="w-[450px] h-[280px]">
+                <FlippingCard 
+                    width={444}
+                    height={274}
+                    className={cn(
+                    "cursor-pointer",
+                    // Removed ring as glowing shadow provides the border effect
+                    // isSelected && "ring-4 ring-primary rounded-xl"
                     )}
-                  </div>
-                }
-                backContent={
-                  <div className="flex flex-col items-center justify-center h-full p-8 text-center relative bg-black/50">
-                     {/* Ambient Glow */}
-                     <div 
-                        className={cn(
-                            "absolute inset-0 opacity-10 blur-3xl transition-colors duration-500 -z-10",
+                    onClick={() => {
+                    playSelect();
+                    onSelect(vibe.id);
+                    }}
+                    frontContent={
+                    <div className="flex flex-col items-center justify-center h-full p-8 relative">
+                        {/* Ambient Glow */}
+                        <div 
+                            className={cn(
+                                "absolute inset-0 opacity-20 blur-3xl transition-colors duration-500 -z-10",
+                            )}
+                            style={{
+                                background: `radial-gradient(circle at center, ${vibe.color}, transparent 70%)`
+                            }}
+                        />
+                        
+                        <div className={cn(
+                        "p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md mb-4 shadow-xl",
+                        isSelected ? "text-primary border-primary/50" : "text-white"
+                        )}>
+                        {Icon && <Icon className="w-12 h-12" />}
+                        </div>
+                        
+                        <h3 className={cn(
+                        "text-4xl font-display font-bold uppercase italic tracking-wide text-center",
+                        isSelected ? "text-white text-glow" : "text-white/90"
+                        )}>
+                        {vibe.title}
+                        </h3>
+
+                        {isSelected && (
+                            <div className="mt-4 px-4 py-1 rounded-full bg-primary text-black text-sm font-bold uppercase tracking-wider animate-pulse">
+                                Selected
+                            </div>
                         )}
-                        style={{
-                            background: `radial-gradient(circle at center, ${vibe.color}, transparent 70%)`
-                        }}
-                    />
-
-                    <div className="mb-4 text-sm font-bold text-white/60 uppercase tracking-widest">
-                        Vibe: {vibe.vibe}
                     </div>
+                    }
+                    backContent={
+                    <div className="flex flex-col items-center justify-center h-full p-8 text-center relative bg-black/50">
+                        {/* Ambient Glow */}
+                        <div 
+                            className={cn(
+                                "absolute inset-0 opacity-10 blur-3xl transition-colors duration-500 -z-10",
+                            )}
+                            style={{
+                                background: `radial-gradient(circle at center, ${vibe.color}, transparent 70%)`
+                            }}
+                        />
 
-                    <p className="text-lg text-white/90 font-medium leading-relaxed">
-                      {vibe.description}
-                    </p>
-                  </div>
-                }
-              />
+                        <div className="mb-4 text-sm font-bold text-white/60 uppercase tracking-widest">
+                            Vibe: {vibe.vibe}
+                        </div>
+
+                        <p className="text-lg text-white/90 font-medium leading-relaxed">
+                        {vibe.description}
+                        </p>
+                    </div>
+                    }
+                />
+              </GlowingShadow>
             </motion.div>
           );
         })}
