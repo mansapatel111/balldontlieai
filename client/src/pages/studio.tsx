@@ -5,6 +5,7 @@ import { VoiceSelector } from "@/components/voice-selector";
 import { LiveCommentary } from "@/components/live-commentary";
 import { CyberneticGridShader } from "@/components/cybernetic-grid-shader";
 import { CommentaryShowcase } from "@/components/commentary-showcase";
+import { DottedSurface } from "@/components/ui/dotted-surface";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -49,6 +50,9 @@ export default function Studio() {
               transition={{ duration: 0.3 }}
               className="flex flex-col items-center justify-center min-h-[60vh] relative z-10"
             >
+              <div className="absolute inset-0 -z-10 rounded-3xl overflow-hidden border border-white/5">
+                <DottedSurface className="size-full" />
+              </div>
               <VideoInput onVideoSelect={handleVideoSelect} />
               <CommentaryShowcase />
             </motion.div>
