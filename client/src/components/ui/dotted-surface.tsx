@@ -28,9 +28,12 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
     const scene = new THREE.Scene();
     // No fog for now to ensure visibility
 
+    const width = containerRef.current.clientWidth;
+    const height = containerRef.current.clientHeight;
+
     const camera = new THREE.PerspectiveCamera(
       75,
-      window.innerWidth / window.innerHeight,
+      width / height,
       1,
       10000,
     );
@@ -42,7 +45,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
       antialias: true,
     });
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
 
     // Clear any existing canvas
@@ -115,14 +118,18 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 
       positionAttribute.needsUpdate = true;
       renderer.render(scene, camera);
-      count += 0.1;
+      count += 0.02; // Reduced speed for smoother animation
     };
 
     // Handle window resize
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      if (!containerRef.current) return;
+      const width = containerRef.current.clientWidth;
+      const height = containerRef.current.clientHeight;
+      
+      camera.aspect = width / height;
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(width, height);
     };
 
     window.addEventListener('resize', handleResize);
