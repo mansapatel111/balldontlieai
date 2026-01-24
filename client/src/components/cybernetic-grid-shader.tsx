@@ -113,10 +113,20 @@ export function CyberneticGridShader() {
 
     // 5) Mouse handler
     const onMouseMove = (e: MouseEvent) => {
-      // Invert Y coordinate for shader space
+      // Get mouse position relative to canvas element, accounting for pixel ratio
+      const canvas = renderer.domElement;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // Scale to match the actual rendering resolution (accounting for devicePixelRatio)
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      
+      // Set mouse position in shader space (inverted Y)
       uniforms.iMouse.value.set(
-        e.clientX,
-        window.innerHeight - e.clientY
+        x * scaleX,
+        (rect.height - y) * scaleY
       );
     };
     window.addEventListener('mousemove', onMouseMove);
@@ -151,6 +161,7 @@ export function CyberneticGridShader() {
       className="absolute inset-0 w-full h-full -z-10"
       style={{
         overflow: "hidden",
+        cursor: "none",
       }}
       aria-label="Cybernetic Grid animated background"
     />

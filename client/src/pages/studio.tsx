@@ -62,7 +62,13 @@ export default function Studio() {
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.3 }}
               className="fixed inset-0 z-0 flex flex-col items-center justify-center pt-24 pb-12 px-4"
+              style={{ cursor: "none" }}
             >
+              <style>{`
+                #root .fixed.inset-0 * {
+                  cursor: none !important;
+                }
+              `}</style>
               <CyberneticGridShader />
               <div className="relative z-10 w-full h-full max-w-6xl mx-auto flex flex-col items-center justify-center">
                 <VibeSelector selectedVibe={vibeId} onSelect={handleVibeSelect} />
@@ -78,7 +84,13 @@ export default function Studio() {
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.3 }}
               className="fixed inset-0 z-0 flex flex-col items-center justify-center pt-24 pb-12 px-4"
+              style={{ cursor: "none" }}
             >
+              <style>{`
+                #root .fixed.inset-0 * {
+                  cursor: none !important;
+                }
+              `}</style>
               <CyberneticGridShader />
               <div className="relative z-10 w-full h-full max-w-6xl mx-auto flex flex-col items-center justify-center">
                 <VoiceSelector selectedVoice={voiceId} onSelect={handleVoiceSelect} />
