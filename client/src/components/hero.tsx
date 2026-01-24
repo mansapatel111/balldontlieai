@@ -39,9 +39,9 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-muted-foreground font-display font-bold italic max-w-3xl mb-12 leading-relaxed"
+            className="text-lg md:text-xl text-cyan-200/80 font-display font-bold italic max-w-3xl mb-12 leading-relaxed"
           >
-            Transform any boring sports clip into <span className="text-white">hilarious, high-energy brainrot commentary</span>.
+            Transform any boring sports clip into high-energy brainrot commentary.
             <br className="hidden md:block" />
             Powered by unhinged AI models trained on pure internet chaos.
           </motion.p>
