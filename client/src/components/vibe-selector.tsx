@@ -26,7 +26,7 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[1000px] mx-auto">
         {VIBES.map((vibe, idx) => {
           const Icon = (Icons as any)[vibe.icon];
           const isSelected = selectedVibe === vibe.id;
@@ -43,15 +43,14 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
                 damping: 20
               }}
               onMouseEnter={() => playHover()}
+              className="w-full flex justify-center" // Ensure flex centering
             >
-              <GlowingShadow className="w-[450px] h-[280px]">
+              <GlowingShadow className="w-full max-w-[450px] aspect-[450/280]">
                 <FlippingCard 
-                    width={444}
-                    height={274}
+                    width={undefined} // Let CSS handle width
+                    height={undefined} // Let CSS handle height
                     className={cn(
-                    "cursor-pointer",
-                    // Removed ring as glowing shadow provides the border effect
-                    // isSelected && "ring-4 ring-primary rounded-xl"
+                    "cursor-pointer w-full h-full", // Fill the container
                     )}
                     onClick={() => {
                     playSelect();

@@ -14,17 +14,17 @@ export function FlippingCard({
   className,
   frontContent,
   backContent,
-  height = 300,
-  width = 350,
+  height,
+  width,
   onClick,
 }: FlippingCardProps) {
   return (
     <div
-      className="group/flipping-card [perspective:1000px] cursor-pointer"
+      className="group/flipping-card [perspective:1000px] cursor-pointer w-full h-full"
       style={
         {
-          "--height": `${height}px`,
-          "--width": `${width}px`,
+          "--height": height ? `${height}px` : "100%",
+          "--width": width ? `${width}px` : "100%",
         } as React.CSSProperties
       }
       onClick={onClick}
@@ -32,7 +32,7 @@ export function FlippingCard({
       <div
         className={cn(
           "relative rounded-xl border border-white/10 bg-black/80 shadow-lg transition-all duration-700 [transform-style:preserve-3d] group-hover/flipping-card:[transform:rotateY(180deg)]",
-          "h-[var(--height)] w-[var(--width)]",
+          "h-full w-full", // Use full size of container
           className
         )}
       >

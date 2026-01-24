@@ -101,8 +101,10 @@
   background: transparent;
   border-radius: calc(var(--card-radius) * 0.9);
   display: block;
-  width: calc(100% - 4px);
-  height: calc(100% - 4px);
+  /* Adjust width to ensure it spans the area minus a small border margin */
+  inset: 4px;
+  width: auto;
+  height: auto;
 }
 
 .glow-content span {
