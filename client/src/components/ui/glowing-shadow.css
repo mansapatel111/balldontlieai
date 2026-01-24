@@ -94,6 +94,7 @@
   width: 100%;
   height: 100%;
   border-radius: var(--card-radius);
+  pointer-events: none; /* Ensure clicks pass through */
 }
 
 .glow-content {
@@ -105,6 +106,7 @@
   inset: 4px;
   width: auto;
   height: auto;
+  z-index: 10; /* Ensure content is above glow effects */
 }
 
 .glow-content span {
