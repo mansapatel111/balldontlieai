@@ -65,7 +65,7 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder=""
-          className="w-full bg-black/20 border border-white/10 rounded-2xl py-6 pl-12 pr-40 text-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-white/50 focus:ring-1 focus:ring-white/50 transition-all backdrop-blur-sm"
+          className="w-full bg-black/20 border-2 border-white rounded-2xl py-6 pl-12 pr-40 text-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-white focus:ring-2 focus:ring-white/50 transition-all backdrop-blur-sm"
         />
         <button 
           type="submit"

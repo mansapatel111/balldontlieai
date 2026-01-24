@@ -40,38 +40,44 @@ export const VIBES = [
 export const SAMPLE_VIDEOS = [
   {
     id: 1,
-    title: "Lakers vs Warriors - 2024 Finals",
-    thumbnail: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&q=80&w=800",
-    duration: "3:45"
+    title: "2016 World Series Game 7",
+    thumbnail: "https://img.youtube.com/vi/Mg-CNmu1XrU/maxresdefault.jpg",
+    duration: "10:45",
+    url: "https://www.youtube.com/watch?v=Mg-CNmu1XrU"
   },
   {
     id: 2,
-    title: "Mahomes Game-Winning TD",
-    thumbnail: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=800",
-    duration: "2:32"
+    title: "2018 Super Bowl",
+    thumbnail: "https://img.youtube.com/vi/qW1xbhW2PEE/maxresdefault.jpg",
+    duration: "8:32",
+    url: "https://www.youtube.com/watch?v=qW1xbhW2PEE"
   },
   {
     id: 3,
-    title: "Messi World Cup Final Goal",
-    thumbnail: "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=800",
-    duration: "4:15"
+    title: "Messi World Cup Goal",
+    thumbnail: "https://img.youtube.com/vi/Q_A_FP2F7T0/maxresdefault.jpg",
+    duration: "5:15",
+    url: "https://www.youtube.com/watch?v=Q_A_FP2F7T0"
   },
   {
     id: 4,
-    title: "Curry 3-Point Record Night",
-    thumbnail: "https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&q=80&w=800",
-    duration: "3:20"
+    title: "2016 NBA Finals Game 7",
+    thumbnail: "https://img.youtube.com/vi/WPLmAQFyVIA/maxresdefault.jpg",
+    duration: "9:20",
+    url: "https://www.youtube.com/watch?v=WPLmAQFyVIA"
   },
   {
     id: 5,
-    title: "Ohtani 2-Way Dominance",
-    thumbnail: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?auto=format&fit=crop&q=80&w=800",
-    duration: "5:45"
+    title: "Minneapolis Miracle",
+    thumbnail: "https://img.youtube.com/vi/dzRRi2QcSEM/maxresdefault.jpg",
+    duration: "6:45",
+    url: "https://www.youtube.com/watch?v=dzRRi2QcSEM"
   },
   {
     id: 6,
-    title: "Djokovic vs Alcaraz US Open",
-    thumbnail: "https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?auto=format&fit=crop&q=80&w=800",
-    duration: "4:55"
+    title: "Gators Championship Basketball",
+    thumbnail: "https://img.youtube.com/vi/igDpFxg60qU/maxresdefault.jpg",
+    duration: "7:55",
+    url: "https://www.youtube.com/watch?v=igDpFxg60qU"
   }
 ];
