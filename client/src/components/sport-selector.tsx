@@ -66,6 +66,7 @@ export function SportSelector({ selectedSport, onSelect }: SportSelectorProps) {
               transition={{ delay: idx * 0.1 }}
               onClick={() => onSelect(sport.id)}
               onMouseEnter={() => playHover()}
+              whileHover={{ scale: 1.02 }}
               className={cn(
                 "relative rounded-xl border-2 p-6 transition-all duration-200 cursor-pointer backdrop-blur-md",
                 isSelected
