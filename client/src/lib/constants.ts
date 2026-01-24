@@ -60,5 +60,23 @@ export const SAMPLE_VIDEOS = [
     title: "Valorant Ace Clip",
     thumbnail: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800",
     duration: "1:15"
+  },
+  {
+    id: 4,
+    title: "Speed IShowSpeed Rage",
+    thumbnail: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=800",
+    duration: "2:10"
+  },
+  {
+    id: 5,
+    title: "Kai Cenat Rizz Academy",
+    thumbnail: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=800",
+    duration: "1:45"
+  },
+  {
+    id: 6,
+    title: "Minecraft Parkour Fail",
+    thumbnail: "https://images.unsplash.com/photo-1627856014759-08522924670d?auto=format&fit=crop&q=80&w=800",
+    duration: "0:55"
   }
 ];

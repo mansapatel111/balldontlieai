@@ -25,8 +25,7 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <div className="text-center space-y-2">
-        <h2 className="text-2xl font-display font-bold text-white">Input Source</h2>
-        <p className="text-muted-foreground">Paste a link or choose a brainrot classic</p>
+        <h2 className="text-2xl font-display font-bold text-white uppercase italic">Browse or Choose a Classic Game</h2>
       </div>
 
       {/* URL Input */}
@@ -43,20 +42,20 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
           type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder="Paste YouTube URL here..."
-          className="w-full bg-black/20 border border-white/10 rounded-2xl py-6 pl-12 pr-32 text-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-neon-purple/50 focus:ring-1 focus:ring-neon-purple/50 transition-all backdrop-blur-sm"
+          placeholder=""
+          className="w-full bg-black/20 border border-white/10 rounded-2xl py-6 pl-12 pr-40 text-lg text-white placeholder:text-muted-foreground focus:outline-none focus:border-white/50 focus:ring-1 focus:ring-white/50 transition-all backdrop-blur-sm"
         />
         <button 
           type="submit"
-          className="absolute right-2 top-2 bottom-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-6 font-medium text-white transition-all active:scale-95"
+          className="absolute right-2 top-2 bottom-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-6 font-display font-bold text-white transition-all active:scale-95 uppercase"
         >
-          Analyze
+          Start Watching
         </button>
       </motion.form>
 
       <div className="flex items-center gap-4">
         <div className="h-px bg-white/5 flex-1" />
-        <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest">OR SELECT PRESET</span>
+        <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest">OR SELECT FEATURED</span>
         <div className="h-px bg-white/5 flex-1" />
       </div>
 
@@ -98,17 +97,6 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
             )}
           </motion.div>
         ))}
-      </div>
-
-      {/* Upload Zone (Visual Only) */}
-      <div className="border-2 border-dashed border-white/10 rounded-2xl p-8 flex flex-col items-center justify-center text-center gap-4 hover:border-white/20 hover:bg-white/5 transition-colors cursor-pointer group">
-        <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-          <Upload className="w-6 h-6 text-muted-foreground group-hover:text-white transition-colors" />
-        </div>
-        <div>
-          <h3 className="text-lg font-medium text-white">Upload local file</h3>
-          <p className="text-sm text-muted-foreground">Supports MP4, MOV, WEBM (Max 500MB)</p>
-        </div>
       </div>
     </div>
   );
