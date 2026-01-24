@@ -72,7 +72,7 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
             className={cn(
               "group relative aspect-video rounded-xl overflow-hidden cursor-pointer border transition-all duration-300",
               selectedId === video.id 
-                ? "border-neon-purple shadow-[0_0_20px_rgba(147,51,234,0.3)] ring-1 ring-neon-purple" 
+                ? "border-white shadow-[0_0_20px_rgba(255,255,255,0.2)] ring-1 ring-white" 
                 : "border-white/5 hover:border-white/20"
             )}
           >
@@ -92,8 +92,8 @@ export function VideoInput({ onVideoSelect }: VideoInputProps) {
             </div>
             
             {selectedId === video.id && (
-              <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-neon-purple flex items-center justify-center shadow-lg">
-                <Check className="w-3 h-3 text-white" />
+              <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-white flex items-center justify-center shadow-lg">
+                <Check className="w-3 h-3 text-black" />
               </div>
             )}
           </motion.div>

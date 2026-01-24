@@ -53,8 +53,8 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 w-full justify-center"
           >
-            <Link href="/studio" className="group relative px-8 py-4 rounded-full bg-neon-purple text-white font-bold text-lg overflow-hidden transition-transform active:scale-95 hover:shadow-[0_0_40px_-10px_var(--color-neon-purple)]">
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+            <Link href="/studio" className="group relative px-8 py-4 rounded-full bg-white text-black font-bold text-lg overflow-hidden transition-transform active:scale-95 hover:shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)]">
+                <div className="absolute inset-0 bg-black/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                 <span className="relative flex items-center gap-2">
                   Start Rotting Now <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
