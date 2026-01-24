@@ -33,7 +33,7 @@ export function Hero() {
           >
             Transform any boring sports clip into high-energy brainrot commentary.
             <br className="hidden md:block" />
-            Powered by unhinged models trained on pure internet chaos.
+            Powered by unhinged AI models trained on pure internet chaos.
           </motion.p>
 
           <motion.div 
@@ -43,12 +43,12 @@ export function Hero() {
             className="flex flex-col sm:flex-row gap-4 w-full justify-center"
           >
             <GlowingShadow>
-              <Link href="/studio" className="flex items-center gap-2 px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-display font-bold text-lg backdrop-blur-sm transition-colors group">
+              <Link href="/studio" className="flex items-center gap-2 px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-display font-bold text-lg backdrop-blur-sm transition-colors group uppercase">
                   Start Rotting <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </GlowingShadow>
             
-            <button className="px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-display font-bold text-lg backdrop-blur-sm transition-colors flex items-center gap-2 group">
+            <button className="px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-display font-bold text-lg backdrop-blur-sm transition-colors flex items-center gap-2 group uppercase">
               <Play className="w-5 h-5 fill-current" />
               Watch Demo
             </button>
