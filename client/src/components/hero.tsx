@@ -98,42 +98,6 @@ export function Hero() {
                   "Bro thinks he's the main character 💀💀"
                 </p>
              </motion.div>
-
-             <motion.div 
-                animate={{ y: [0, -25, 0], rotate: [0, 4, 0] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
-                className="absolute top-1/3 right-[15%] bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-48 hidden lg:block z-0"
-             >
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-mono text-pink-400">VIBE CHECK</span>
-                  <div className="flex gap-1">
-                    <span className="w-1 h-3 bg-pink-400 animate-pulse" />
-                    <span className="w-1 h-2 bg-pink-400 animate-pulse delay-75" />
-                    <span className="w-1 h-4 bg-pink-400 animate-pulse delay-150" />
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground font-mono">
-                  "[LOUD INCORRECT BUZZER NOISE]"
-                </p>
-             </motion.div>
-
-             <motion.div 
-                animate={{ y: [0, 20, 0], rotate: [0, -2, 0] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-                className="absolute bottom-1/3 left-[15%] bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-52 hidden lg:block z-0"
-             >
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-mono text-red-500">SYSTEM ALERT</span>
-                  <div className="flex gap-1">
-                    <span className="w-1 h-3 bg-red-500 animate-pulse" />
-                    <span className="w-1 h-2 bg-red-500 animate-pulse delay-75" />
-                    <span className="w-1 h-4 bg-red-500 animate-pulse delay-150" />
-                  </div>
-                </div>
-                <p className="text-xs text-muted-foreground font-mono">
-                  "ANKLES.exe has stopped working"
-                </p>
-             </motion.div>
           </div>
 
         </div>
