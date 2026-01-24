@@ -51,7 +51,80 @@ const DEMO_COMMENTS: Comment[] = [
     text: "Someone check the controller, I think his X button is broken. PASS THE BALL! 😡",
     likes: "27K",
     vibe: "Rage"
-  }
+  },
+  {
+  id: 7,
+  user: "@midrange_myth",
+  text: "That shot selection was a cry for help. Analytics just fell to their knees.",
+  likes: "18K",
+  vibe: "Disappointed"
+},
+{
+  id: 8,
+  user: "@defense_wins",
+  text: "He’s guarding air and still getting cooked. The ghost crossover was filthy tho.",
+  likes: "31K",
+  vibe: "Hype"
+},
+{
+  id: 9,
+  user: "@nba_twitter",
+  text: "We’re watching a generational cardio performance. Just running for vibes.",
+  likes: "55K",
+  vibe: "Meme"
+},
+{
+  id: 10,
+  user: "@coach_whispers",
+  text: "Yeah nah, his minutes are getting evaporated after this. Clipboard terrorism.",
+  likes: "21K",
+  vibe: "Savage"
+},
+{
+  id: 11,
+  user: "@highlights_only",
+  text: "Delete the tape. Burn the footage. This possession never happened.",
+  likes: "47K",
+  vibe: "Ruthless"
+},
+{
+  id: 12,
+  user: "@lockerroom_tea",
+  text: "You just KNOW the group chat is flaming him right now. Screenshots pending.",
+  likes: "29K",
+  vibe: "Messy"
+},
+{
+  id: 13,
+  user: "@iso_bandit",
+  text: "Dribbled for 14 seconds just to pass regret to a teammate. Elite selfish hoops.",
+  likes: "16K",
+  vibe: "Irritated"
+},
+{
+  id: 14,
+  user: "@film_room_fiend",
+  text: "This is why coaches preach fundamentals. This tape is going straight into a PowerPoint.",
+  likes: "22K",
+  vibe: "Analytical"
+}
+
+];
+const FLOAT_POSITIONS = [
+  { top: '10%', left: '0%' },
+  { top: '10%', left: '20%' },
+  { top: '10%', left: '50%' },
+  { top: '10%', left: '80%' },
+
+  { top: '40%', left: '0%' },
+  { top: '40%', left: '25%' },
+  { top: '40%', left: '55%' },
+  { top: '40%', left: '80%' },
+
+  { top: '70%', left: '0%' },
+  { top: '70%', left: '30%' },
+  { top: '70%', left: '57%' },
+  { top: '70%', left: '75%' }
 ];
 
 export function CommentaryShowcase() {
@@ -68,7 +141,7 @@ export function CommentaryShowcase() {
         {DEMO_COMMENTS.map((comment, idx) => (
           <motion.div
             key={comment.id}
-            initial={{ opacity: 0, scale: 0.8, x: Math.random() * 100 - 50, y: Math.random() * 100 + 50 }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ 
               opacity: 1, 
               scale: 1, 
@@ -93,10 +166,12 @@ export function CommentaryShowcase() {
             }}
             style={{
               position: 'absolute',
-              top: `${Math.random() * 80 + 5}%`,
-              left: `${Math.random() * 80 + 5}%`,
-              zIndex: Math.floor(Math.random() * 10)
+              top: FLOAT_POSITIONS[idx % FLOAT_POSITIONS.length].top,
+              left: FLOAT_POSITIONS[idx % FLOAT_POSITIONS.length].left,
+              transform: 'translate(-50%, -50%)',
+              zIndex: 1
             }}
+
             className="w-full max-w-[320px] rounded-xl p-5 backdrop-blur-md shadow-xl hover:scale-105 hover:z-50 transition-all duration-300 cursor-pointer border bg-black/40 border-white/10 hover:bg-white/10"
           >
             {/* Social Style Header */}
