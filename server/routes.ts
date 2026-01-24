@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+<<<<<<< HEAD
 import { YoutubeTranscript } from "youtube-transcript";
 import OpenAI from "openai";
 import { PERSONALITIES, MODEL } from "./personalities";
@@ -19,11 +20,14 @@ interface RewrittenSnippet {
   duration: number;
   line: string;
 }
+=======
+>>>>>>> 9b298a6 (Restored to '3a63cc8dd4bbf89669795d3c5ecccc58eb3b1d23')
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
+<<<<<<< HEAD
   // Initialize API clients here (after dotenv has loaded)
   console.log('OPENROUTER_API_KEY exists:', !!process.env.OPENROUTER_API_KEY);
   console.log('ELEVENLABS_API_KEY exists:', !!process.env.ELEVENLABS_API_KEY);
@@ -461,6 +465,13 @@ ${JSON.stringify(formatted, null, 2)}
       res.status(500).json({ error: error.message || "Failed to process video with audio" });
     }
   });
+=======
+  // put application routes here
+  // prefix all routes with /api
+
+  // use storage to perform CRUD operations on the storage interface
+  // e.g. storage.insertUser(user) or storage.getUserByUsername(username)
+>>>>>>> 9b298a6 (Restored to '3a63cc8dd4bbf89669795d3c5ecccc58eb3b1d23')
 
   return httpServer;
 }

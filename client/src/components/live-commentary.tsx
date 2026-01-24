@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { VIBES } from "@/lib/constants";
 import { Play, Pause, SkipBack, Volume2, Share2, Download, RefreshCw, Loader2 } from "lucide-react";
 
+
 interface LiveCommentaryProps {
   vibeId: string;
   videoUrl: string;
@@ -14,12 +15,8 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [transcript, setTranscript] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const vibe = VIBES.find(v => v.id === vibeId);
   const containerRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<any>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Extract YouTube video ID from URL
   const getYouTubeId = (url: string) => {
@@ -31,7 +28,7 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
 
   const youtubeId = getYouTubeId(videoUrl);
 
-  // Load YouTube IFrame API
+  // Fake commentary generation simulation
   useEffect(() => {
     if (!youtubeId) return;
 
@@ -145,36 +142,46 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
   // useEffect(() => {
   //   if (!isPlaying) return;
     
-  //   const interval = setInterval(() => {
-  //     setProgress(p => (p >= 100 ? 0 : p + 0.5));
+    const interval = setInterval(() => {
+      setProgress(p => (p >= 100 ? 0 : p + 0.5));
       
-  //     // Randomly add brainrot commentary
-  //     if (Math.random() > 0.8) {
-  //       const phrases = [
-  //         "NAHHH BRO IS COOKING 💀",
-  //         ...
-  //       ];
-  //       const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-  //       setTranscript(prev => [...prev.slice(-4), randomPhrase]);
-  //     }
-  //   }, 100);
+      // Randomly add brainrot commentary
+      if (Math.random() > 0.8) {
+        const phrases = [
+          "NAHHH BRO IS COOKING 💀",
+          "WHAT IS THAT FORM???",
+          "OHIO RIZZ UNLOCKED",
+          "LITERAL NPC BEHAVIOR",
+          "BLUD THINK HE HIM 😭",
+          "ABSOLUTE CINEMA",
+          "SKIBIDI TOILET ENERGY",
+          "NO SHOT HE JUST DID THAT",
+          "CHAT IS THIS REAL??",
+          "MOGGED BY GRAVITY",
+          "NEGATIVE AURA DETECTED"
+        ];
+        const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+        setTranscript(prev => [...prev.slice(-4), randomPhrase]);
+      }
+    }, 100);
 
-  //   return () => clearInterval(interval);
-  // }, [isPlaying]);
+    return () => clearInterval(interval);
+  }, [isPlaying]);
 
   return (
     <div className="w-full h-[calc(100vh-100px)] grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Hidden audio element for AI voiceover */}
-      <audio ref={audioRef} style={{ display: 'none' }} />
-      
       {/* Main Player Area */}
       <div className="lg:col-span-2 flex flex-col gap-4 h-full">
-        <div className="relative flex-1 bg-black/40 rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+        <div className="relative flex-1 bg-black/40 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
           {/* YouTube Video Player */}
           {youtubeId ? (
-            <div 
-              id="youtube-player"
-              className="absolute inset-0 w-full h-full rounded-3xl"
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0&controls=1&rel=0`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-zinc-900">
@@ -185,30 +192,34 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
               </span>
             </div>
           )}
-        </div>
-        
-        {/* Video Info Bar */}
-        <div className="bg-black/40 backdrop-blur-md border border-white/10 p-4 rounded-2xl flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={togglePlayPause}
-              className="w-10 h-10 rounded-full bg-gradient-to-br from-neon-purple to-neon-pink flex items-center justify-center hover:scale-105 transition-transform"
-            >
-              {isPlaying ? <Pause className="w-5 h-5 text-white fill-current" /> : <Play className="w-5 h-5 text-white fill-current ml-0.5" />}
-            </button>
-            <div>
-              <h3 className="font-display font-bold text-white text-sm">Now Playing</h3>
-              <p className="text-xs text-muted-foreground font-mono">{vibe?.title} Mode Active</p>
+
+          {/* Controls Overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-full h-1 bg-white/20 rounded-full mb-4 cursor-pointer overflow-hidden">
+              <motion.div 
+                className="h-full bg-neon-purple"
+                style={{ width: `${progress}%` }} 
+              />
             </div>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <button className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-colors">
-              <Share2 className="w-4 h-4" />
-            </button>
-            <button className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white transition-colors">
-              <Download className="w-4 h-4" />
-            </button>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <button 
+                  onClick={() => setIsPlaying(!isPlaying)}
+                  className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform"
+                >
+                  {isPlaying ? <Pause className="fill-current w-5 h-5" /> : <Play className="fill-current w-5 h-5 ml-1" />}
+                </button>
+                <div className="text-white font-mono text-sm">00:{Math.floor(progress).toString().padStart(2, '0')} / 01:30</div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <Volume2 className="text-white w-5 h-5" />
+                <div className="w-24 h-1 bg-white/20 rounded-full">
+                  <div className="w-2/3 h-full bg-white rounded-full" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -220,22 +231,8 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-display font-bold text-white">Live Commentary</h3>
             <div className="flex items-center gap-2">
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 text-yellow-500 animate-spin" />
-                  <span className="text-xs font-mono text-yellow-500 uppercase">Generating</span>
-                </>
-              ) : error ? (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-red-500" />
-                  <span className="text-xs font-mono text-red-500 uppercase">Error</span>
-                </>
-              ) : (
-                <>
-                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span className="text-xs font-mono text-green-500 uppercase">Ready</span>
-                </>
-              )}
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <span className="text-xs font-mono text-red-500 uppercase">Processing</span>
             </div>
           </div>
           
@@ -274,35 +271,23 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
           <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-black/40 to-transparent z-10" />
           
           <div className="space-y-4 overflow-y-auto h-full pb-4 flex flex-col justify-end">
-             {isLoading ? (
-                <div className="text-center text-muted-foreground py-10">
-                  <Loader2 className="w-8 h-8 mx-auto mb-4 animate-spin text-neon-purple" />
-                  <p className="text-sm">Generating AI commentary...</p>
+             <AnimatePresence mode="popLayout">
+                {transcript.map((text, i) => (
+                  <motion.div
+                    key={`${i}-${text}`}
+                    initial={{ opacity: 0, x: 20, scale: 0.95 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm"
+                  >
+                    <p className="text-white font-medium text-lg leading-snug">"{text}"</p>
+                  </motion.div>
+                ))}
+             </AnimatePresence>
+             {transcript.length === 0 && (
+                <div className="text-center text-muted-foreground py-10 opacity-50">
+                  Waiting for video playback...
                 </div>
-             ) : error ? (
-                <div className="text-center text-red-500 py-10">
-                  <p className="text-sm font-medium">⚠️ {error}</p>
-                  <p className="text-xs text-red-500/60 mt-2">Please try another video or check your API keys</p>
-                </div>
-             ) : (
-                <AnimatePresence mode="popLayout">
-                  {transcript.map((text, i) => (
-                    <motion.div
-                      key={`${i}-${text}`}
-                      initial={{ opacity: 0, x: 20, scale: 0.95 }}
-                      animate={{ opacity: 1, x: 0, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9 }}
-                      className="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm"
-                    >
-                      <p className="text-white font-medium text-lg leading-snug">"{text}"</p>
-                    </motion.div>
-                  ))}
-                  {transcript.length === 0 && (
-                    <div className="text-center text-muted-foreground py-10 opacity-50">
-                      Waiting for video playback...
-                    </div>
-                  )}
-                </AnimatePresence>
              )}
           </div>
         </div>

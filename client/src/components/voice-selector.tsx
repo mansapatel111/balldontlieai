@@ -3,9 +3,7 @@ import { Mic, Volume2, Sparkles, Wand2, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useSound from "use-sound";
 import { GlareCard } from "@/components/ui/glare-card";
-// @ts-ignore
 import { Splide, SplideSlide } from '@splidejs/react-splide';
-// @ts-ignore
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
 import '@splidejs/react-splide/css';
 import { useState, useEffect } from "react";
