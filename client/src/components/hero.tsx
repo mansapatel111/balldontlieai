@@ -30,22 +30,20 @@ export function Hero() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display italic text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] mb-8 text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 relative"
+            className="font-display italic text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-[0.9] mb-8 text-transparent bg-clip-text bg-gradient-to-br from-white via-white to-white/50 relative whitespace-nowrap"
           >
-            BALL DON'T
-            <br />
-            <span className="text-white">
-              LIE AI
-            </span>
+            BALL DON'T <span className="text-white">LIE AI</span>
           </motion.h1>
 
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl text-muted-foreground font-display font-bold italic max-w-2xl mb-12 leading-relaxed"
+            className="text-lg md:text-xl text-muted-foreground font-display font-bold italic max-w-3xl mb-12 leading-relaxed"
           >
-            Transform any boring sports clip into <span className="text-white">hilarious, high-energy brainrot commentary</span>. Powered by unhinged AI models trained on pure internet chaos.
+            Transform any boring sports clip into <span className="text-white">hilarious, high-energy brainrot commentary</span>.
+            <br className="hidden md:block" />
+            Powered by unhinged AI models trained on pure internet chaos.
           </motion.p>
 
           <motion.div 
