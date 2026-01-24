@@ -2,6 +2,7 @@ import { Layout } from "@/components/layout";
 import { VideoInput } from "@/components/video-input";
 import { VibeSelector } from "@/components/vibe-selector";
 import { LiveCommentary } from "@/components/live-commentary";
+import { CyberneticGridShader } from "@/components/cybernetic-grid-shader";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -28,7 +29,7 @@ export default function Studio() {
 
   return (
     <Layout>
-      <div className="min-h-screen pt-24 pb-12 px-4 container mx-auto">
+      <div className="min-h-screen pt-24 pb-12 px-4 container mx-auto relative">
         <AnimatePresence mode="wait">
           {step === "upload" && (
             <motion.div
@@ -50,8 +51,9 @@ export default function Studio() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.3 }}
-              className="flex flex-col items-center justify-center min-h-[60vh]"
+              className="flex flex-col items-center justify-center h-[calc(100vh-140px)] w-full"
             >
+              <CyberneticGridShader />
               <VibeSelector selectedVibe={vibeId} onSelect={handleVibeSelect} />
             </motion.div>
           )}
