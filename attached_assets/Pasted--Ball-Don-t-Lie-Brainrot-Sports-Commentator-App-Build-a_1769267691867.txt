@@ -1,0 +1,141 @@
+# Ball Don't Lie - Brainrot Sports Commentator App
+
+Build a next-gen web app that transforms any video into hilarious, high-energy brainrot commentary with a cutting-edge UI inspired by 21st.dev aesthetics.
+
+## Core Features
+
+### Video Input System
+
+- Sleek video selector with:
+
+  - Preloaded highlight videos (basketball, soccer, gaming clips)
+
+  - YouTube URL paste input with real-time preview
+
+### Vibe Selector
+
+Create a stunning carousel or card selector for commentary styles:
+
+- **Rizz Lord** - charismatic, meme-heavy, Ohio-coded
+
+- **Sigma Grindset** - motivational, hustle culture, based takes
+
+- **Zoomer Chaos** - unhinged, ADHD energy, max brainrot
+
+- **NPC Energy** - oblivious, repetitive, background character vibes
+
+- **Giga Chad** - dominant, assertive, peak masculinity commentary
+
+### Live Commentary Engine
+
+- Real-time video player with:
+
+  - Waveform visualization synced to generated audio
+
+  - Live transcript display showing original → brainrot transformation
+
+  - Commentary buffer indicator
+
+## Technical Architecture
+
+### Frontend Stack
+
+- next js, tsx 
+
+- Framer Motion for animations
+
+- Video.js or similar for player
+
+- Web Audio API for audio visualization
+
+### Backend Processing
+
+1. **Transcription**: Use Whisper API or similar to generate timestamped transcript
+
+2. **AI Commentary**: Stream transcript chunks to Gemini/LLaMA with vibe-specific system prompts
+
+3. **TTS Pipeline**: Send generated commentary to ElevenLabs in real-time
+
+4. **Audio Sync**: Layer TTS output over original video with precise timing
+
+## UI Design Requirements (21st.dev inspired)
+
+### Visual Style - use shader animation specifically from this: https://21st.dev/community/components/aliimam/shader-animation/default
+
+- Dark mode with vibrant accent colors (neon purple, electric blue, acid green)
+
+- Glassmorphism effects on cards and panels
+
+- Smooth gradient backgrounds with animated noise/grain texture
+
+- Micro-interactions on every button and input
+
+- Satisfying hover states with scale/glow effects
+
+### Layout Components
+
+- Full-screen video player with minimal chrome
+
+- Floating control panel with backdrop blur
+
+- Smooth page transitions between upload → selection → playback
+
+- Mobile-responsive with touch-optimized controls
+
+### Animations
+
+- Page load: Staggered fade-in of elements
+
+- Video selection: Smooth zoom transitions
+
+- Vibe cards: 3D tilt effect on hover
+
+- Commentary generation: Pulse/ripple effects showing AI activity
+
+- Audio visualization: Dynamic frequency bars
+
+### Typography
+
+- Bold, modern sans-serif (Inter, Satoshi, or similar)
+
+- Large, impactful headings
+
+- Subtle text shadows for depth
+
+- Animated gradient text for "BALL DON'T LIE" logo
+
+## Key User Interactions
+
+1. **Landing**: Explosive hero section with animated logo, "Start Rotting" CTA button
+
+2. **Upload Flow**: Drag zone expands with spring animation, progress bars with particle effects
+
+3. **Vibe Selection**: Cards flip/reveal on selection, haptic feedback simulation
+
+4. **Playback**: Commentary chunks appear with typewriter effect, audio bars dance to voice
+
+## Implementation Notes
+
+- Use WebSocket or Server-Sent Events for real-time commentary streaming
+
+- Implement audio buffering to prevent gaps between TTS chunks
+
+- Cache generated commentary for replay functionality
+
+- Add "Share Clip" feature with 15-second highlight exports
+
+- Include volume mixer for balancing original audio vs commentary
+
+## Stretch Goals
+
+- Multi-language support for maximum international brainrot
+
+- User-created custom vibes with prompt templates
+
+- Leaderboard of most-used videos/vibes
+
+- Social sharing with auto-generated meme thumbnails
+
+- Live streaming mode for real-time event commentary
+
+Build this with maximum swagger - every interaction should feel premium, responsive, and slightly unhinged. The UI should match the chaotic energy of the commentary itself.
