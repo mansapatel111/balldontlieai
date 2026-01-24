@@ -87,15 +87,51 @@ export function Hero() {
                 className="absolute bottom-1/4 right-10 md:right-20 bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-56 hidden lg:block"
              >
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-mono text-neon-green">TRANSCRIPT LIVE</span>
+                  <span className="text-xs font-mono text-green-400">TRANSCRIPT LIVE</span>
                   <div className="flex gap-1">
-                    <span className="w-1 h-3 bg-neon-green animate-pulse" />
-                    <span className="w-1 h-2 bg-neon-green animate-pulse delay-75" />
-                    <span className="w-1 h-4 bg-neon-green animate-pulse delay-150" />
+                    <span className="w-1 h-3 bg-green-400 animate-pulse" />
+                    <span className="w-1 h-2 bg-green-400 animate-pulse delay-75" />
+                    <span className="w-1 h-4 bg-green-400 animate-pulse delay-150" />
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground font-mono">
                   "Bro thinks he's the main character 💀💀"
+                </p>
+             </motion.div>
+
+             <motion.div 
+                animate={{ y: [0, -25, 0], rotate: [0, 4, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2.5 }}
+                className="absolute top-1/3 right-[15%] bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-48 hidden lg:block z-0"
+             >
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-mono text-green-400">TRANSCRIPT LIVE</span>
+                  <div className="flex gap-1">
+                    <span className="w-1 h-3 bg-green-400 animate-pulse" />
+                    <span className="w-1 h-2 bg-green-400 animate-pulse delay-75" />
+                    <span className="w-1 h-4 bg-green-400 animate-pulse delay-150" />
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground font-mono">
+                  "[LOUD INCORRECT BUZZER NOISE]"
+                </p>
+             </motion.div>
+
+             <motion.div 
+                animate={{ y: [0, 20, 0], rotate: [0, -2, 0] }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+                className="absolute bottom-1/3 left-[15%] bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-52 hidden lg:block z-0"
+             >
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-mono text-green-400">TRANSCRIPT LIVE</span>
+                  <div className="flex gap-1">
+                    <span className="w-1 h-3 bg-green-400 animate-pulse" />
+                    <span className="w-1 h-2 bg-green-400 animate-pulse delay-75" />
+                    <span className="w-1 h-4 bg-green-400 animate-pulse delay-150" />
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground font-mono">
+                  "ANKLES.exe has stopped working"
                 </p>
              </motion.div>
           </div>
