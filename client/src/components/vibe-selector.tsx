@@ -10,20 +10,20 @@ export function VibeSelector({ selectedVibe, onSelect }: { selectedVibe: string 
       description: vibe.description,
       content: (
         <div 
-          className="h-full w-full flex items-center justify-center text-white cursor-pointer group transition-all"
+          className="h-full w-full flex items-center justify-center text-white cursor-pointer group transition-all relative overflow-hidden"
           onClick={() => onSelect(vibe.id)}
-          style={{
-            background: `linear-gradient(to bottom right, ${vibe.gradient.replace('from-', 'var(--color-').replace(' to-', '), var(--color-').replace(')', '))')}` // Fallback approximation or custom logic needed if using Tailwind classes in JS directly
-            // For now, let's use a simple background logic or pass the classname to a child
-          }}
         >
+          {/* Gradient Background */}
           <div className={`absolute inset-0 bg-gradient-to-br ${vibe.gradient} opacity-80`} />
+          
+          {/* Icon/Box Visual */}
           <div className="relative z-10 flex flex-col items-center gap-4">
-             <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-                {Icon && <Icon className="w-8 h-8 text-white" />}
+             <div className="w-24 h-24 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-xl group-hover:scale-110 transition-transform duration-300">
+                {Icon && <Icon className="w-12 h-12 text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" />}
              </div>
-             <button className="px-6 py-2 bg-white text-black font-display font-bold italic uppercase rounded-full hover:scale-105 transition-transform">
-               Select {vibe.title}
+             
+             <button className="px-6 py-2 bg-white text-black font-display font-bold italic uppercase rounded-full hover:scale-105 transition-transform shadow-lg">
+               Select
              </button>
           </div>
         </div>
