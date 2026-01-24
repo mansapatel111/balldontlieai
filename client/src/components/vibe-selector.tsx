@@ -3,7 +3,7 @@ import { VIBES } from "@/lib/constants";
 import * as Icons from "lucide-react";
 import { cn } from "@/lib/utils";
 import useSound from "use-sound";
-import HolographicCard from "@/components/ui/holographic-card";
+import { FlippingCard } from "@/components/ui/flipping-card";
 
 interface VibeSelectorProps {
   selectedVibe: string | null;
@@ -41,62 +41,78 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
                 stiffness: 100,
                 damping: 20
               }}
-              onClick={() => {
-                playSelect();
-                onSelect(vibe.id);
-              }}
               onMouseEnter={() => playHover()}
-              className="perspective-1000"
             >
-              <HolographicCard 
+              <FlippingCard 
+                width={400}
+                height={250}
                 className={cn(
-                  "h-64 cursor-pointer p-8 flex flex-col items-start justify-between border-2 bg-black/80 backdrop-blur-xl",
-                  isSelected 
-                    ? "border-primary shadow-[0_0_50px_-12px_rgba(var(--primary),0.5)] ring-2 ring-primary/50" 
-                    : "border-white/10 hover:border-white/30"
+                  "cursor-pointer",
+                  isSelected && "ring-4 ring-primary rounded-xl"
                 )}
-                style={{
-                    // @ts-ignore
-                    "--vibe-color": vibe.color
+                onClick={() => {
+                  playSelect();
+                  onSelect(vibe.id);
                 }}
-              >
-                 {/* Card Content */}
-                <div className="flex w-full justify-between items-start">
+                frontContent={
+                  <div className="flex flex-col items-center justify-center h-full p-8 relative">
+                     {/* Ambient Glow */}
+                     <div 
+                        className={cn(
+                            "absolute inset-0 opacity-20 blur-3xl transition-colors duration-500 -z-10",
+                        )}
+                        style={{
+                            background: `radial-gradient(circle at center, ${vibe.color}, transparent 70%)`
+                        }}
+                    />
+                    
                     <div className={cn(
-                        "p-3 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md transition-colors duration-300",
-                        isSelected ? "bg-primary/20 border-primary/50 text-primary" : "text-white/80 group-hover:text-white"
+                      "p-4 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md mb-4 shadow-xl",
+                      isSelected ? "text-primary border-primary/50" : "text-white"
                     )}>
-                        {Icon && <Icon className="w-8 h-8" />}
+                      {Icon && <Icon className="w-12 h-12" />}
                     </div>
+                    
+                    <h3 className={cn(
+                      "text-4xl font-display font-bold uppercase italic tracking-wide text-center",
+                      isSelected ? "text-white text-glow" : "text-white/90"
+                    )}>
+                      {vibe.title}
+                    </h3>
+
                     {isSelected && (
-                        <div className="px-3 py-1 rounded-full bg-primary text-black text-xs font-bold uppercase tracking-wider animate-pulse">
+                        <div className="mt-4 px-4 py-1 rounded-full bg-primary text-black text-sm font-bold uppercase tracking-wider animate-pulse">
                             Selected
                         </div>
                     )}
-                </div>
+                  </div>
+                }
+                backContent={
+                  <div className="flex flex-col items-center justify-center h-full p-8 text-center relative bg-black/50">
+                     {/* Ambient Glow */}
+                     <div 
+                        className={cn(
+                            "absolute inset-0 opacity-10 blur-3xl transition-colors duration-500 -z-10",
+                        )}
+                        style={{
+                            background: `radial-gradient(circle at center, ${vibe.color}, transparent 70%)`
+                        }}
+                    />
 
-                <div className="space-y-2 relative z-10">
-                    <h3 className={cn(
-                        "text-3xl font-display font-bold uppercase italic tracking-wide transition-colors duration-300",
-                         isSelected ? "text-white text-glow-sm" : "text-white/90"
-                    )}>
-                        {vibe.title}
-                    </h3>
-                    <p className="text-white/60 text-sm font-medium leading-relaxed max-w-[90%]">
-                        {vibe.description}
+                    <div className="mb-4 text-sm font-bold text-white/60 uppercase tracking-widest">
+                        Vibe: {vibe.vibe}
+                    </div>
+
+                    <p className="text-lg text-white/90 font-medium leading-relaxed">
+                      {vibe.description}
                     </p>
-                </div>
 
-                {/* Ambient Glow */}
-                <div 
-                    className={cn(
-                        "absolute inset-0 opacity-20 blur-3xl transition-colors duration-500 -z-10",
-                    )}
-                    style={{
-                        background: `radial-gradient(circle at center, ${vibe.color}, transparent 70%)`
-                    }}
-                />
-              </HolographicCard>
+                    <div className="mt-6 text-primary text-sm font-bold uppercase tracking-widest flex items-center gap-2">
+                        Click to Select <Icons.ArrowRight className="w-4 h-4" />
+                    </div>
+                  </div>
+                }
+              />
             </motion.div>
           );
         })}
