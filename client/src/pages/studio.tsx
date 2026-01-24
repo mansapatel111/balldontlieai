@@ -42,20 +42,29 @@ export default function Studio() {
       <div className="min-h-screen pt-24 pb-12 px-4 container mx-auto relative">
         <AnimatePresence mode="wait">
           {step === "upload" && (
-            <motion.div
-              key="upload"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
-              transition={{ duration: 0.3 }}
-              className="flex flex-col items-center justify-center min-h-[60vh] relative z-10"
-            >
-              <div className="absolute inset-0 -z-10 rounded-3xl overflow-hidden border border-white/5">
-                <DottedSurface className="size-full" />
-              </div>
-              <VideoInput onVideoSelect={handleVideoSelect} />
-              <CommentaryShowcase />
-            </motion.div>
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="fixed inset-0 z-0"
+              >
+                <DottedSurface className="w-full h-full" />
+              </motion.div>
+              
+              <motion.div
+                key="upload"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col items-center justify-center min-h-[60vh] relative z-10"
+              >
+                <VideoInput onVideoSelect={handleVideoSelect} />
+                <CommentaryShowcase />
+              </motion.div>
+            </>
           )}
 
           {step === "vibe" && (
