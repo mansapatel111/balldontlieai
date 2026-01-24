@@ -49,29 +49,31 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
                 isSelected && "scale-105"
               )}>
                 <FlipCard
-                  className="w-72 h-80"
+                  className="w-96 h-64" // Landscape aspect ratio
                   rotate="y"
                   frontContent={
-                    <GlareCard className="flex flex-col items-center justify-center text-center p-6 h-full border border-white/10">
+                    <GlareCard className="flex flex-row items-center justify-between p-8 h-full border border-white/10 gap-6">
+                      <div className="flex-1 text-left">
+                        <h3 className="text-3xl font-bold text-white font-display uppercase italic tracking-wider mb-2 drop-shadow-lg">
+                          {vibe.title}
+                        </h3>
+                        
+                        <div className="px-3 py-1 rounded-full bg-white/10 text-xs font-bold uppercase tracking-widest text-white/80 border border-white/5 inline-block mb-4">
+                          {vibe.vibe}
+                        </div>
+                        
+                        <div className="text-white/40 text-[10px] uppercase tracking-widest animate-pulse">
+                          Hover for details
+                        </div>
+                      </div>
+
                       <div className={cn(
-                        "w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-colors shadow-lg shadow-black/50 border border-white/10",
+                        "w-24 h-24 rounded-full flex-shrink-0 flex items-center justify-center transition-colors shadow-lg shadow-black/50 border border-white/10",
                         isSelected ? "bg-white text-black" : "bg-black/40 text-white"
                       )}
                       style={{ boxShadow: isSelected ? `0 0 20px ${vibe.color}` : undefined }}
                       >
-                        {Icon && <Icon className="w-10 h-10" />}
-                      </div>
-                      
-                      <h3 className="text-2xl font-bold text-white font-display uppercase italic tracking-wider mb-2 drop-shadow-lg">
-                        {vibe.title}
-                      </h3>
-                      
-                      <div className="px-3 py-1 rounded-full bg-white/10 text-xs font-bold uppercase tracking-widest text-white/80 border border-white/5">
-                        {vibe.vibe}
-                      </div>
-
-                      <div className="absolute bottom-4 text-white/40 text-[10px] uppercase tracking-widest animate-pulse">
-                        Hover to Flip
+                        {Icon && <Icon className="w-12 h-12" />}
                       </div>
                     </GlareCard>
                   }

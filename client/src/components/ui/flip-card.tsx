@@ -24,7 +24,7 @@ export default function FlipCard({
     <div className={cn("group h-80 w-64 [perspective:1000px]", className)} {...props}>
       <div
         className={cn(
-          "relative h-full w-full transition-all duration-500 [transform-style:preserve-3d]",
+          "relative h-full w-full transition-all duration-1000 [transform-style:preserve-3d]",
           self[0],
         )}
       >
