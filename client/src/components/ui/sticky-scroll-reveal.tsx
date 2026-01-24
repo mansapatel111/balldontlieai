@@ -40,14 +40,14 @@ export const StickyScroll = ({
   });
 
   const backgroundColors = [
-    "var(--slate-900)",
-    "var(--black)",
-    "var(--neutral-900)",
+    "transparent",
+    "transparent", 
+    "transparent",
   ];
   const linearGradients = [
-    "linear-gradient(to bottom right, var(--cyan-500), var(--emerald-500))",
-    "linear-gradient(to bottom right, var(--pink-500), var(--indigo-500))",
-    "linear-gradient(to bottom right, var(--orange-500), var(--yellow-500))",
+    "linear-gradient(to bottom right, var(--color-neon-purple), var(--color-neon-blue))",
+    "linear-gradient(to bottom right, var(--color-neon-pink), var(--color-neon-purple))",
+    "linear-gradient(to bottom right, var(--color-neon-green), var(--color-neon-blue))",
   ];
 
   return (
@@ -55,7 +55,7 @@ export const StickyScroll = ({
       animate={{
         backgroundColor: backgroundColors[activeCard % backgroundColors.length],
       }}
-      className="h-[30rem] overflow-y-auto flex justify-center relative space-x-10 rounded-md p-10 no-scrollbar"
+      className="h-[30rem] overflow-y-auto flex justify-center relative space-x-10 rounded-2xl border border-white/10 bg-black/20 backdrop-blur-sm p-10 no-scrollbar"
       ref={ref}
     >
       <div className="div relative flex items-start px-4">
@@ -69,7 +69,7 @@ export const StickyScroll = ({
                 animate={{
                   opacity: activeCard === index ? 1 : 0.3,
                 }}
-                className="text-2xl font-bold text-slate-100 font-display italic tracking-tight"
+                className="text-3xl font-bold text-white font-display italic tracking-tight uppercase"
               >
                 {item.title}
               </motion.h2>
@@ -80,7 +80,7 @@ export const StickyScroll = ({
                 animate={{
                   opacity: activeCard === index ? 1 : 0.3,
                 }}
-                className="text-kg text-slate-300 max-w-sm mt-10 font-display"
+                className="text-xl text-white/80 max-w-sm mt-4 font-display leading-relaxed"
               >
                 {item.description}
               </motion.p>
@@ -94,7 +94,7 @@ export const StickyScroll = ({
           background: linearGradients[activeCard % linearGradients.length],
         }}
         className={cn(
-          "hidden lg:block h-60 w-80 rounded-md bg-white sticky top-10 overflow-hidden",
+          "hidden lg:block h-60 w-80 rounded-2xl sticky top-10 overflow-hidden border border-white/10 shadow-2xl",
           contentClassName
         )}
       >
