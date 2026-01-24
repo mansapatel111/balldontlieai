@@ -36,7 +36,7 @@ export default function FlipCard({
         {/* Back */}
         <div
           className={cn(
-            "absolute h-full w-full rounded-2xl bg-black/90 p-6 text-slate-200 [backface-visibility:hidden] border border-white/10",
+            "absolute h-full w-full [backface-visibility:hidden]",
             self[1],
           )}
         >

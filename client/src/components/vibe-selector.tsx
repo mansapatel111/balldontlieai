@@ -63,7 +63,7 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
                         </div>
                         
                         <div className="text-white/40 text-[10px] uppercase tracking-widest animate-pulse">
-                          Hover for details
+                          Click to select
                         </div>
                       </div>
 
@@ -78,7 +78,7 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
                     </GlareCard>
                   }
                   backContent={
-                    <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
+                    <GlareCard className="flex flex-col items-center justify-center h-full text-center space-y-4 border border-white/10">
                       <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
                         <Icons.Info className="w-6 h-6 text-white/80" />
                       </div>
@@ -95,7 +95,7 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
                       >
                         Select Vibe
                       </div>
-                    </div>
+                    </GlareCard>
                   }
                 />
               </div>
