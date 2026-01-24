@@ -47,17 +47,17 @@ export const SAMPLE_VIDEOS = [
   },
   {
     id: 2,
-    title: "2018 Super Bowl",
-    thumbnail: "https://img.youtube.com/vi/qW1xbhW2PEE/maxresdefault.jpg",
+    title: "Miami vs Indiana National Championship",
+    thumbnail: "https://img.youtube.com/vi/wKysQHghYrc/maxresdefault.jpg",
     duration: "8:32",
-    url: "https://www.youtube.com/watch?v=qW1xbhW2PEE"
+    url: "https://www.youtube.com/watch?v=wKysQHghYrc"
   },
   {
     id: 3,
     title: "Messi World Cup Goal",
-    thumbnail: "https://img.youtube.com/vi/Q_A_FP2F7T0/maxresdefault.jpg",
+    thumbnail: "https://img.youtube.com/vi/Mxkg3qLIPC8/maxresdefault.jpg",
     duration: "5:15",
-    url: "https://www.youtube.com/watch?v=Q_A_FP2F7T0"
+    url: "https://www.youtube.com/watch?v=Mxkg3qLIPC8"
   },
   {
     id: 4,
@@ -68,10 +68,10 @@ export const SAMPLE_VIDEOS = [
   },
   {
     id: 5,
-    title: "Minneapolis Miracle",
-    thumbnail: "https://img.youtube.com/vi/dzRRi2QcSEM/maxresdefault.jpg",
+    title: "2013 Iron Bowl",
+    thumbnail: "https://img.youtube.com/vi/vR7s2m5Z5GA/maxresdefault.jpg",
     duration: "6:45",
-    url: "https://www.youtube.com/watch?v=dzRRi2QcSEM"
+    url: "https://www.youtube.com/watch?v=vR7s2m5Z5GA"
   },
   {
     id: 6,
