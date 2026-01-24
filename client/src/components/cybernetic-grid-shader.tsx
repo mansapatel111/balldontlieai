@@ -148,7 +148,7 @@ export function CyberneticGridShader() {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 w-full h-full -z-10"
+      className="fixed inset-0 w-full h-full -z-10"
       style={{
         overflow: "hidden",
       }}

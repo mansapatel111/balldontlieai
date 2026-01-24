@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { VIBES } from "@/lib/constants";
 import * as Icons from "lucide-react";
 import { cn } from "@/lib/utils";
+import useSound from "use-sound";
 
 interface VibeSelectorProps {
   selectedVibe: string | null;
@@ -9,6 +10,8 @@ interface VibeSelectorProps {
 }
 
 export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
+  const [playHover] = useSound("/sounds/hover.mp3", { volume: 0.5 });
+
   return (
     <div className="w-full max-w-4xl mx-auto h-full flex flex-col">
       <div className="text-center space-y-2 mb-8 flex-shrink-0">
@@ -27,6 +30,8 @@ export function VibeSelector({ selectedVibe, onSelect }: VibeSelectorProps) {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: idx * 0.1 }}
               onClick={() => onSelect(vibe.id)}
+              onMouseEnter={() => playHover()}
+              whileHover={{ scale: 1.02 }}
               className={cn(
                 "relative w-full rounded-2xl p-6 flex items-start gap-6 text-left transition-all duration-300 border backdrop-blur-sm overflow-hidden group",
                 isSelected 
