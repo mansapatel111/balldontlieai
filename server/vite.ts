@@ -1,4 +1,5 @@
 import { type Express } from "express";
+import express from "express";
 import { createServer as createViteServer, createLogger } from "vite";
 import { type Server } from "http";
 import viteConfig from "../vite.config";
@@ -30,6 +31,10 @@ export async function setupVite(server: Server, app: Express) {
   });
 
   app.use(vite.middlewares);
+
+  // Serve static files from public directory (for generated audio, etc)
+  const publicPath = path.resolve(import.meta.dirname, "..", "public");
+  app.use(express.static(publicPath));
 
   app.use("/{*path}", async (req, res, next) => {
     const url = req.originalUrl;

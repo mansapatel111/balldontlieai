@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
-import { VIBES } from "@/lib/constants";
+import { VIBES, SAMPLE_VIDEOS } from "@/lib/constants";
 import { Play, Pause, SkipBack, Volume2, Share2, Download, RefreshCw, Loader2 } from "lucide-react";
 
 // Declare YouTube IFrame API types
@@ -106,7 +106,15 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
       setError(null);
       
       try {
-        const response = await fetch('/api/process-with-audio', {
+        // Find the video transcript from constants
+        const video = SAMPLE_VIDEOS.find(v => v.url === videoUrl);
+        const transcript = video?.transcription;
+
+        if (!transcript) {
+          throw new Error("No transcript found for this video");
+        }
+
+        const response = await fetch('/api/commentary', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -114,6 +122,7 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
           body: JSON.stringify({
             videoId: youtubeId,
             personality: vibeId,
+            transcript: transcript,
           }),
         });
 
@@ -123,15 +132,16 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
 
         const data = await response.json();
         
-        // Set the audio source
+        // Set the audio source from ElevenLabs
         if (data.audioUrl && audioRef.current) {
+          console.log('Setting audio source:', data.audioUrl);
           audioRef.current.src = data.audioUrl;
         }
-
+        
         // Display commentary in transcript
-        if (data.commentary && Array.isArray(data.commentary)) {
-          const commentaryTexts = data.commentary.map((item: any) => item.text);
-          setTranscript(commentaryTexts);
+        if (data.snippets && Array.isArray(data.snippets)) {
+          const commentaryLines = data.snippets.map((item: any) => item.line);
+          setTranscript(commentaryLines);
         }
       } catch (err) {
         console.error('Error fetching commentary:', err);
@@ -142,7 +152,7 @@ export function LiveCommentary({ vibeId, videoUrl, onReset }: LiveCommentaryProp
     };
 
     fetchCommentary();
-  }, [youtubeId, vibeId]);
+  }, [youtubeId, vibeId, videoUrl]);
 
   // Remove the fake commentary generation
   // useEffect(() => {
