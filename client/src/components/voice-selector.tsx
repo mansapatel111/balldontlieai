@@ -11,11 +11,13 @@ import '@splidejs/react-splide/css';
 import { useState, useEffect } from "react";
 
 // Import voice images
-import nickiImg from "@/assets/voices/nicki.png";
+import dominicanImg from "@/assets/voices/dominican.png";
+import cartmanImg from "@/assets/voices/cartman.png";
+import valleygirlImg from "@/assets/voices/valley.png";
+import jamaicanImg from "@/assets/voices/jamaican.png";
+import miamiImg from "@/assets/voices/miami.png";
 import spongebobImg from "@/assets/voices/spongebob.png";
 import ghostfaceImg from "@/assets/voices/ghostface.png";
-import jamesImg from "@/assets/voices/james.png";
-import randomImg from "@/assets/voices/random.png";
 
 interface VoiceSelectorProps {
   selectedVoice: string | null;
@@ -46,11 +48,22 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
         if (response.ok) {
           const data = await response.json();
           console.log('Fetched voices:', data.voices);
-          // Map to add default images
-          const voicesWithImages = data.voices.map((voice: Voice, index: number) => ({
-            ...voice,
-            image: [nickiImg, spongebobImg, ghostfaceImg, jamesImg, randomImg][index % 5],
-          }));
+          // Map voice names/ids to images
+          const imageMap: Record<string, string> = {
+            "jamaicanman": jamaicanImg,
+            "ericcartman": cartmanImg,
+            "valleygirl": valleygirlImg,
+            "dominican": dominicanImg,
+            "miami": miamiImg,
+            "spongebob": spongebobImg,
+            "ghostface": ghostfaceImg,
+          };
+          const voicesWithImages = data.voices.map((voice: Voice) => {
+            // Normalize: lowercase, remove spaces
+            const key = (voice.id || voice.name || "").toLowerCase().replace(/\s+/g, "");
+            let image = imageMap[key];
+            return { ...voice, image };
+          });
           setVoices(voicesWithImages);
         } else {
           console.error('Failed to fetch voices');
