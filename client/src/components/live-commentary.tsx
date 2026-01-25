@@ -21,6 +21,9 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioElsRef = useRef<Array<HTMLAudioElement | null>>([]);
+  const segmentsRef = useRef<Array<any>>([]);
+  const playedRef = useRef<Set<number>>(new Set());
 
   // Extract YouTube video ID from URL
   const getYouTubeId = (url: string) => {
@@ -81,68 +84,126 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
 
     if (isPlaying) {
       playerRef.current.pauseVideo();
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+      // pause all currently playing audio elements
+      audioElsRef.current.forEach(a => a?.pause());
     } else {
       playerRef.current.playVideo();
-      if (audioRef.current) {
-        audioRef.current.play();
-      }
+      // resume any audio elements that should be playing for current time
+      // (scheduler will trigger playback shortly)
     }
     setIsPlaying(!isPlaying);
   };
 
-  // Fetch AI commentary and audio
+  // Fetch AI commentary via Python endpoint, then request per-snippet audio
   useEffect(() => {
     if (!youtubeId || !vibeId) return;
 
-    const fetchCommentary = async () => {
+    let cancelled = false;
+
+    const run = async () => {
       setIsLoading(true);
       setError(null);
+      audioElsRef.current = [];
+      segmentsRef.current = [];
+      playedRef.current = new Set();
 
       try {
-        const response = await fetch('/api/process-with-audio', {
+        // 1) Get rewritten commentary from python script endpoint
+        const resp = await fetch('/api/generate-transcript-py', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            videoId: youtubeId,
-            personality: vibeId,
-            voiceId: voiceId,
-          }),
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ videoId: youtubeId, personality: vibeId }),
         });
 
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error('API Error Response:', errorText);
-          throw new Error(`API request failed: ${response.statusText} - ${errorText}`);
+        if (!resp.ok) throw new Error(`transcript endpoint failed: ${resp.statusText}`);
+        const json = await resp.json();
+        const commentary = json.commentary || json;
+
+        if (cancelled) return;
+
+        // update transcript display
+        setTranscript(commentary.map((c: any) => c.line || c.text || ''));
+
+        // 2) Generate per-snippet audio segments
+        const genResp = await fetch('/api/generate-audio-segments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ commentary, voiceId }),
+        });
+
+        if (!genResp.ok) {
+          const txt = await genResp.text();
+          throw new Error(`audio segments failed: ${genResp.statusText} ${txt}`);
         }
 
-        const data = await response.json();
-        console.log('API Response:', data);
+        const genJson = await genResp.json();
+        const segments = genJson.segments || [];
+        segmentsRef.current = segments;
 
-        // Set the audio source
-        if (data.audioUrl && audioRef.current) {
-          audioRef.current.src = data.audioUrl;
-        }
+        // prefetch audio elements
+        segments.forEach((seg: any, i: number) => {
+          if (seg.audioUrl) {
+            const a = new Audio(seg.audioUrl);
+            a.preload = 'auto';
+            audioElsRef.current[i] = a;
+          } else {
+            audioElsRef.current[i] = null;
+          }
+        });
 
-        // Display commentary in transcript
-        if (data.commentary && Array.isArray(data.commentary)) {
-          const commentaryTexts = data.commentary.map((item: any) => item.text);
-          setTranscript(commentaryTexts);
-        }
       } catch (err) {
-        console.error('Error fetching commentary:', err);
-        setError(err instanceof Error ? err.message : 'Failed to generate commentary');
+        console.error('Error in commentary/audio flow:', err);
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
-        setIsLoading(false);
+        if (!cancelled) setIsLoading(false);
       }
     };
 
-    fetchCommentary();
-  }, [youtubeId, vibeId]);
+    run();
+
+    return () => { cancelled = true; };
+  }, [youtubeId, vibeId, voiceId]);
+
+  // Scheduler: play audio segments synced to YouTube currentTime
+  useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      try {
+        const player = playerRef.current;
+        if (!player || !player.getCurrentTime) {
+          raf = requestAnimationFrame(tick);
+          return;
+        }
+
+        const t = player.getCurrentTime();
+
+        // reset played flags if seeking backwards
+        segmentsRef.current.forEach((seg: any, i: number) => {
+          if (t < seg.start - 0.5 && playedRef.current.has(i)) {
+            playedRef.current.delete(i);
+          }
+        });
+
+        segmentsRef.current.forEach((seg: any, i: number) => {
+          if (playedRef.current.has(i)) return;
+          const audioEl = audioElsRef.current[i];
+          if (!audioEl) return;
+          if (t >= seg.start - 0.05) {
+            // start playback
+            audioEl.currentTime = 0;
+            audioEl.play().catch(() => {});
+            playedRef.current.add(i);
+          }
+        });
+      } catch (e) {
+        // ignore
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   // Remove the fake commentary generation
   useEffect(() => {

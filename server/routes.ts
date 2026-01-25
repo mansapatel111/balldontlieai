@@ -1,10 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-<<<<<<< HEAD
 import { YoutubeTranscript } from "youtube-transcript";
 import OpenAI from "openai";
 import { PERSONALITIES, MODEL } from "./personalities";
+import { execFile } from "child_process";
 import { ElevenLabsClient } from "elevenlabs";
 import fs from "fs";
 import path from "path";
@@ -20,14 +20,11 @@ interface RewrittenSnippet {
   duration: number;
   line: string;
 }
-=======
->>>>>>> 9b298a6 (Restored to '3a63cc8dd4bbf89669795d3c5ecccc58eb3b1d23')
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-<<<<<<< HEAD
   // Initialize API clients here (after dotenv has loaded)
   console.log('OPENROUTER_API_KEY exists:', !!process.env.OPENROUTER_API_KEY);
   console.log('ELEVENLABS_API_KEY exists:', !!process.env.ELEVENLABS_API_KEY);
@@ -43,6 +40,45 @@ export async function registerRoutes(
   // Health check
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
+  });
+
+  // Run the Python rewrite script (uses youtube-transcript-api + OpenRouter/OpenAI)
+  app.post("/api/generate-transcript-py", async (req, res) => {
+    try {
+      const { videoId, personality } = req.body;
+      if (!videoId || !personality) {
+        return res.status(400).json({ error: "videoId and personality are required" });
+      }
+
+      const scriptPath = path.join(process.cwd(), "backend", "python", "rewrite.py");
+
+      // Prefer using the project's python venv if it exists so installed deps are available
+      const venvPython = path.join(process.cwd(), "backend", "python", "venv", "bin", "python3");
+      const pythonExec = fs.existsSync(venvPython) ? venvPython : "python3";
+
+      const child = execFile(pythonExec, [scriptPath, videoId, personality], { timeout: 120000 }, (err, stdout, stderr) => {
+        if (err) {
+          console.error("Python script error:", err, stderr);
+          return res.status(500).json({ error: "python_error", details: stderr || err.message });
+        }
+
+        try {
+          const parsed = JSON.parse(stdout);
+          return res.json({ commentary: parsed });
+        } catch (parseErr) {
+          console.error("Failed to parse python output:", stdout);
+          return res.status(500).json({ error: "invalid_python_output", raw: stdout });
+        }
+      });
+
+      // in case python writes to stderr with progress, log it
+      if (child.stderr) {
+        child.stderr.on("data", (d) => console.error("python-stderr:", d.toString()));
+      }
+    } catch (error: any) {
+      console.error("Error running python rewrite:", error);
+      res.status(500).json({ error: error.message || "Failed to run python script" });
+    }
   });
 
   // Get available ElevenLabs voices
@@ -465,13 +501,55 @@ ${JSON.stringify(formatted, null, 2)}
       res.status(500).json({ error: error.message || "Failed to process video with audio" });
     }
   });
-=======
-  // put application routes here
-  // prefix all routes with /api
 
-  // use storage to perform CRUD operations on the storage interface
-  // e.g. storage.insertUser(user) or storage.getUserByUsername(username)
->>>>>>> 9b298a6 (Restored to '3a63cc8dd4bbf89669795d3c5ecccc58eb3b1d23')
+  // Generate per-snippet audio files (throttled) and return mapping
+  app.post("/api/generate-audio-segments", async (req, res) => {
+    try {
+      const { commentary, voiceId, pauseMs = 400 } = req.body;
+
+      if (!commentary || !Array.isArray(commentary)) {
+        return res.status(400).json({ error: "commentary array is required" });
+      }
+
+      const audioDir = path.join(process.cwd(), "server", "public", "audio");
+      if (!fs.existsSync(audioDir)) fs.mkdirSync(audioDir, { recursive: true });
+
+      const results: Array<{ start: number; duration: number; audioUrl: string; index: number }> = [];
+
+      for (let i = 0; i < commentary.length; i++) {
+        const item: RewrittenSnippet = commentary[i];
+        const filename = `commentary_segment_${Date.now()}_${i}.mp3`;
+        const filepath = path.join(audioDir, filename);
+
+        try {
+          const audioIter = await elevenlabs.textToSpeech.convert(voiceId || undefined, {
+            text: item.line,
+            model_id: "eleven_turbo_v2",
+          });
+
+          const chunks: Buffer[] = [];
+          for await (const chunk of audioIter) {
+            chunks.push(chunk);
+          }
+          const buffer = Buffer.concat(chunks);
+          fs.writeFileSync(filepath, buffer);
+
+          results.push({ start: item.start, duration: item.duration, audioUrl: `/audio/${filename}`, index: i });
+        } catch (e: any) {
+          console.error("Failed to generate audio for snippet", i, e);
+          results.push({ start: item.start, duration: item.duration, audioUrl: "", index: i });
+        }
+
+        // small pause to avoid overwhelming external service
+        await new Promise((r) => setTimeout(r, pauseMs));
+      }
+
+      res.json({ segments: results });
+    } catch (error: any) {
+      console.error("Error generating audio segments:", error);
+      res.status(500).json({ error: error.message || "Failed to generate audio segments" });
+    }
+  });
 
   return httpServer;
 }
