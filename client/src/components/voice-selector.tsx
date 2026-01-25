@@ -3,7 +3,9 @@ import { Mic, Volume2, Sparkles, Wand2, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useSound from "use-sound";
 import { GlareCard } from "@/components/ui/glare-card";
+// @ts-ignore
 import { Splide, SplideSlide } from '@splidejs/react-splide';
+// @ts-ignore
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
 import '@splidejs/react-splide/css';
 import { useState, useEffect } from "react";
@@ -29,37 +31,12 @@ interface Voice {
   image?: string;
 }
 
-// Fallback voices if API fails
-const FALLBACK_VOICES = [
-  {
-    id: "21m00Tcm4TlvDq8ikWAM",
-    name: "Rachel",
-    description: "Natural, clear American female voice",
-    image: nickiImg,
-  },
-  {
-    id: "EXAVITQu4vr4xnSDxMaL",
-    name: "Bella",
-    description: "Young, engaging American female voice",
-    image: spongebobImg,
-  },
-  {
-    id: "MF3mGyEYCl7XYWbV9V6O",
-    name: "Elli",
-    description: "Emotional, youthful American female voice",
-    image: ghostfaceImg,
-  },
-  {
-    id: "TxGEqnHWrfWFTfGW9XjX",
-    name: "Josh",
-    description: "Deep, young American male voice",
-    image: jamesImg,
-  },
-];
+// Fallback voices if API fails (empty for now, will show custom voices only)
+const FALLBACK_VOICES: Voice[] = [];
 
 export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
   const [playHover] = useSound("/sounds/hover.mp3", { volume: 0.5 });
-  const [voices, setVoices] = useState<Voice[]>(FALLBACK_VOICES);
+  const [voices, setVoices] = useState<Voice[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -68,15 +45,20 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
         const response = await fetch('/api/voices');
         if (response.ok) {
           const data = await response.json();
+          console.log('Fetched voices:', data.voices);
           // Map to add default images
           const voicesWithImages = data.voices.map((voice: Voice, index: number) => ({
             ...voice,
             image: [nickiImg, spongebobImg, ghostfaceImg, jamesImg, randomImg][index % 5],
           }));
           setVoices(voicesWithImages);
+        } else {
+          console.error('Failed to fetch voices');
+          setVoices(FALLBACK_VOICES);
         }
       } catch (error) {
         console.error('Failed to fetch voices, using fallback:', error);
+        setVoices(FALLBACK_VOICES);
       } finally {
         setIsLoading(false);
       }

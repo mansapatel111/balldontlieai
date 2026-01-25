@@ -96,8 +96,13 @@ export async function registerRoutes(
 
       const data = await response.json();
       
+      // Filter for only cloned and professional voices (custom voices)
+      const customVoices = data.voices.filter((voice: any) => 
+        voice.category === 'cloned' || voice.category === 'professional'
+      );
+      
       // Format voices for frontend
-      const voices = data.voices.map((voice: any) => ({
+      const voices = customVoices.map((voice: any) => ({
         id: voice.voice_id,
         name: voice.name,
         category: voice.category,
