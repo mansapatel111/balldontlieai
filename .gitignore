@@ -6,3 +6,4 @@ vite.config.ts.*
 *.tar.gz
 backend/python/.env
 .env
+backend/.venv

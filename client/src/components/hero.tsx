@@ -66,38 +66,72 @@ export function Hero() {
 
           {/* Floating UI Elements Decor */}
           <div className="absolute -z-10 w-full h-full top-0 left-0 pointer-events-none">
-             <motion.div 
-                animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-1/4 left-10 md:left-20 bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-48 hidden lg:block"
-             >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
-                    <Sparkles className="w-4 h-4 text-white" />
-                  </div>
-                  <div className="text-xs font-bold text-white">Rizz Lord</div>
-                </div>
-                <div className="h-2 w-3/4 bg-white/10 rounded-full mb-2" />
-                <div className="h-2 w-1/2 bg-white/10 rounded-full" />
-             </motion.div>
 
-             <motion.div 
-                animate={{ y: [0, 30, 0], rotate: [0, -3, 0] }}
-                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute bottom-1/4 right-10 md:right-20 bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-56 hidden lg:block"
-             >
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-mono text-green-400">TRANSCRIPT LIVE</span>
-                  <div className="flex gap-1">
-                    <span className="w-1 h-3 bg-green-400 animate-pulse" />
-                    <span className="w-1 h-2 bg-green-400 animate-pulse delay-75" />
-                    <span className="w-1 h-4 bg-green-400 animate-pulse delay-150" />
-                  </div>
+            {/* LEFT – Role Card (top-left quadrant) */}
+            <motion.div 
+              animate={{ y: [0, -20, 0], rotate: [0, 4, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-1/4 left-10 md:left-20 bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-52 hidden lg:block"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                  <Sparkles className="w-4 h-4 text-white" />
                 </div>
-                <p className="text-xs text-muted-foreground font-mono">
-                  "Bro thinks he's the main character 💀💀"
-                </p>
-             </motion.div>
+                <div className="text-xs font-bold text-white">Rizz Lord</div>
+              </div>
+              <div className="h-2 w-4/5 bg-white/10 rounded-full mb-2" />
+              <div className="h-2 w-2/3 bg-white/10 rounded-full" />
+            </motion.div>
+
+            {/* LEFT – Vibe Meter (lower-left quadrant) */}
+            <motion.div 
+              animate={{ y: [0, 16, 0], rotate: [0, -3, 0] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+              className="absolute bottom-1/3 left-12 md:left-24 bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-44 hidden lg:block"
+            >
+              <div className="text-[10px] uppercase tracking-widest text-purple-400 mb-2">
+                Vibe Level
+              </div>
+              <div className="flex gap-1">
+                <div className="h-2 w-6 bg-purple-500 rounded-full" />
+                <div className="h-2 w-6 bg-purple-400 rounded-full" />
+                <div className="h-2 w-6 bg-purple-300 rounded-full" />
+              </div>
+            </motion.div>
+
+            {/* RIGHT – Transcript Card (top-right quadrant) */}
+            <motion.div 
+              animate={{ y: [0, 24, 0], rotate: [0, -3, 0] }}
+              transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+              className="absolute top-1/4 right-10 md:right-20 bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-56 hidden lg:block"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-mono text-green-400">LIVE</span>
+                <div className="flex gap-1">
+                  <span className="w-1 h-3 bg-green-400 animate-pulse" />
+                  <span className="w-1 h-2 bg-green-400 animate-pulse delay-75" />
+                  <span className="w-1 h-4 bg-green-400 animate-pulse delay-150" />
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground font-mono">
+                "Bro thinks he's the main character 💀"
+              </p>
+            </motion.div>
+
+            {/* RIGHT – Stat / Heat Card (bottom-right quadrant) */}
+            <motion.div 
+              animate={{ y: [0, -18, 0], rotate: [0, 3, 0] }}
+              transition={{ duration: 8.5, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+              className="absolute bottom-1/4 right-14 md:right-28 bg-black/40 backdrop-blur-xl p-4 rounded-xl border border-white/10 w-48 hidden lg:block"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-bold text-orange-400">HOT TAKE</span>
+                <span className="text-xs text-white/40">🔥 47K</span>
+              </div>
+              <div className="h-2 w-full bg-white/10 rounded-full mb-2" />
+              <div className="h-2 w-3/4 bg-white/10 rounded-full" />
+            </motion.div>
+
           </div>
 
         </div>
