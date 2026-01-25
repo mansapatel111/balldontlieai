@@ -129,4 +129,56 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: hsl(270 100% 60% / 0.8);
   }
+
+  /* Splide arrow styling */
+  .splide__arrow {
+    background: hsl(270 100% 60% / 0.9) !important;
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+    border-radius: 50% !important;
+    backdrop-filter: blur(10px);
+    border: 2px solid hsl(270 100% 70% / 0.5) !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 20px hsl(270 100% 60% / 0.4) !important;
+  }
+
+  .splide__arrow:hover {
+    background: hsl(270 100% 70% / 1) !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 30px hsl(270 100% 60% / 0.6) !important;
+  }
+
+  .splide__arrow svg {
+    fill: white !important;
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+  }
+
+  .splide__arrow--prev {
+    left: -1rem !important;
+  }
+
+  .splide__arrow--next {
+    right: -1rem !important;
+  }
+
+  /* Splide pagination styling */
+  .splide__pagination__page {
+    background: hsl(270 100% 60% / 0.3) !important;
+    width: 12px !important;
+    height: 12px !important;
+    margin: 0 6px !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .splide__pagination__page.is-active {
+    background: hsl(270 100% 60% / 1) !important;
+    transform: scale(1.3) !important;
+    box-shadow: 0 0 10px hsl(270 100% 60% / 0.8) !important;
+  }
+
+  .splide__pagination__page:hover {
+    background: hsl(270 100% 60% / 0.6) !important;
+    transform: scale(1.15) !important;
+  }
 }

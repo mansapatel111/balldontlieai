@@ -82,17 +82,18 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
         <Splide
           options={{
             type: 'loop',
-            drag: 'free',
+            drag: true,
             focus: 'center',
             perPage: 3,
             gap: '2rem',
-            arrows: false,
-            pagination: false,
+            arrows: true,
+            pagination: true,
             autoScroll: {
-              speed: 2, // Increased speed from 1 to 2
+              speed: 0.5,
               pauseOnHover: true,
+              pauseOnFocus: true,
             },
-            padding: '5rem', // Added padding to show more context (start from a little left feeling)
+            padding: '5rem',
             breakpoints: {
               1024: {
                 perPage: 2,
