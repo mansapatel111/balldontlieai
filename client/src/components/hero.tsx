@@ -54,7 +54,7 @@ export function Hero() {
           >
             <GlowingShadow>
               <Link href="/studio" className="flex items-center gap-2 px-8 py-4 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-display font-bold text-lg backdrop-blur-sm transition-colors group uppercase">
-                  Start Rotting <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  Start Balling <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </GlowingShadow>
 
