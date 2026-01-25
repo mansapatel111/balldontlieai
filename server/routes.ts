@@ -57,7 +57,9 @@ export async function registerRoutes(
       const venvPython = path.join(process.cwd(), "backend", "python", "venv", "bin", "python3");
       const pythonExec = fs.existsSync(venvPython) ? venvPython : "python3";
 
-      const child = execFile(pythonExec, [scriptPath, videoId, personality], { timeout: 120000 }, (err, stdout, stderr) => {
+      const timeoutMs = parseInt(process.env.PYTHON_TIMEOUT_MS || "300000", 10); // default 5 minutes
+      console.log("Running python script:", pythonExec, scriptPath, videoId, personality, "timeoutMs=", timeoutMs);
+      const child = execFile(pythonExec, [scriptPath, videoId, personality], { timeout: timeoutMs }, (err, stdout, stderr) => {
         if (err) {
           console.error("Python script error:", err, stderr);
           return res.status(500).json({ error: "python_error", details: stderr || err.message });

@@ -101,7 +101,29 @@ def fetch_transcript(video_id: str):
 
 def rewrite_transcript(transcript, personality_name: str):
     total_time = sum(item.get("duration", 0) for item in transcript)
-    base_prompt = PERSONALITIES.get(personality_name)
+    # Personality lookup: accept either the human-readable name ("Rizz Lord")
+    # or the frontend slug ("rizz-lord"). Try multiple fallbacks.
+    def find_personality_key(name: str):
+        if not name:
+            return None
+        # exact match
+        if name in PERSONALITIES:
+            return name
+        # try converting slug-style to title case: rizz-lord -> Rizz Lord
+        try_title = name.replace('-', ' ').title()
+        if try_title in PERSONALITIES:
+            return try_title
+        # try matching lower/normalized forms
+        norm = name.lower()
+        for k in PERSONALITIES.keys():
+            if k.lower() == norm:
+                return k
+            if k.lower().replace(' ', '-') == norm:
+                return k
+        return None
+
+    key = find_personality_key(personality_name)
+    base_prompt = PERSONALITIES.get(key)
     if base_prompt is None:
         base_prompt = PERSONALITIES.get("Group Chat Bestie")
     base_prompt = base_prompt.format(total_time=total_time)
