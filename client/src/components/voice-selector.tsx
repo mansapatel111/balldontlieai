@@ -11,13 +11,13 @@ import '@splidejs/react-splide/css';
 import { useState, useEffect } from "react";
 
 // Import voice images
-import dominicanImg from "@/assets/voices/dominican.png";
-import cartmanImg from "@/assets/voices/cartman.png";
-import valleygirlImg from "@/assets/voices/valley.png";
 import jamaicanImg from "@/assets/voices/jamaican.png";
-import miamiImg from "@/assets/voices/miami.png";
-import spongebobImg from "@/assets/voices/spongebob.png";
+import cartmanImg from "@/assets/voices/cartman.png";
+import valleyImg from "@/assets/voices/valley.png";
+import nickiImg from "@/assets/voices/nicki.png"; // miami
+import dominicanImg from "@/assets/voices/dominican.png";
 import ghostfaceImg from "@/assets/voices/ghostface.png";
+import spongebobImg from "@/assets/voices/spongebob.png";
 
 interface VoiceSelectorProps {
   selectedVoice: string | null;
@@ -48,20 +48,31 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
         if (response.ok) {
           const data = await response.json();
           console.log('Fetched voices:', data.voices);
-          // Map voice names/ids to images
+          
+          // Map images based on voice name/id
           const imageMap: Record<string, string> = {
-            "jamaicanman": jamaicanImg,
-            "ericcartman": cartmanImg,
-            "valleygirl": valleygirlImg,
-            "dominican": dominicanImg,
-            "miami": miamiImg,
-            "spongebob": spongebobImg,
-            "ghostface": ghostfaceImg,
+            'jamaican': jamaicanImg,
+            'jamaicanman': jamaicanImg,
+            'eric': cartmanImg,
+            'ericcartman': cartmanImg,
+            'cartman': cartmanImg,
+            'valley': valleyImg,
+            'valleygirl': valleyImg,
+            'miami': nickiImg,
+            'miamigirl': nickiImg,
+            'nicki': nickiImg,
+            'dominican': dominicanImg,
+            'dominicanman': dominicanImg,
+            'ghostface': ghostfaceImg,
+            'spongebob': spongebobImg,
+            'sponge': spongebobImg,
           };
+          
           const voicesWithImages = data.voices.map((voice: Voice) => {
-            // Normalize: lowercase, remove spaces
-            const key = (voice.id || voice.name || "").toLowerCase().replace(/\s+/g, "");
-            let image = imageMap[key];
+            // Normalize name/id to lowercase and remove spaces
+            const normalized = (voice.name || voice.id || '').toLowerCase().replace(/\s+/g, '');
+            console.log('Voice normalized name:', normalized, 'Voice name:', voice.name);
+            const image = imageMap[normalized] || spongebobImg; // Use spongebob as fallback temporarily to debug
             return { ...voice, image };
           });
           setVoices(voicesWithImages);
@@ -95,16 +106,15 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
         <Splide
           options={{
             type: 'loop',
-            drag: true,
+            drag: 'free',
             focus: 'center',
             perPage: 3,
             gap: '2rem',
             arrows: true,
-            pagination: true,
+            pagination: false,
             autoScroll: {
-              speed: 0.5,
+              speed: 1,
               pauseOnHover: true,
-              pauseOnFocus: true,
             },
             padding: '5rem',
             breakpoints: {
@@ -140,7 +150,7 @@ export function VoiceSelector({ selectedVoice, onSelect }: VoiceSelectorProps) {
                         className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-                      
+
                       <div className="relative z-10 text-center px-4">
                         <h3 className="text-2xl font-bold text-white font-display uppercase italic tracking-wider mb-2 drop-shadow-lg">
                           {voice.name}
