@@ -79,12 +79,9 @@
     "vaul": "^1.1.2",
     "wouter": "^3.3.5",
     "ws": "^8.18.0",
-<<<<<<< HEAD
     "youtube-captions-scraper": "^2.0.3",
     "youtube-transcript": "^1.2.1",
     "youtubei.js": "^16.0.1",
-=======
->>>>>>> 9b298a6 (Restored to '3a63cc8dd4bbf89669795d3c5ecccc58eb3b1d23')
     "zod": "^3.25.76",
     "zod-validation-error": "^3.4.0"
   },

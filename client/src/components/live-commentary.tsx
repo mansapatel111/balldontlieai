@@ -15,8 +15,12 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [transcript, setTranscript] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const vibe = VIBES.find(v => v.id === vibeId);
   const containerRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<any>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Extract YouTube video ID from URL
   const getYouTubeId = (url: string) => {
@@ -32,8 +36,10 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
   useEffect(() => {
     if (!youtubeId) return;
 
+    const w = window as any;
+
     // Load the IFrame Player API code asynchronously
-    if (!window.YT) {
+    if (!w.YT) {
       const tag = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
       const firstScriptTag = document.getElementsByTagName('script')[0];
@@ -42,8 +48,8 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
 
     // Initialize player when API is ready
     const initPlayer = () => {
-      if (window.YT && window.YT.Player) {
-        playerRef.current = new window.YT.Player('youtube-player', {
+      if (w.YT && w.YT.Player) {
+        playerRef.current = new w.YT.Player('youtube-player', {
           videoId: youtubeId,
           playerVars: {
             autoplay: 0,
@@ -56,10 +62,10 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
       }
     };
 
-    if (window.YT && window.YT.Player) {
+    if (w.YT && w.YT.Player) {
       initPlayer();
     } else {
-      window.onYouTubeIframeAPIReady = initPlayer;
+      w.onYouTubeIframeAPIReady = initPlayer;
     }
 
     return () => {
@@ -94,7 +100,7 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
     const fetchCommentary = async () => {
       setIsLoading(true);
       setError(null);
-      
+
       try {
         const response = await fetch('/api/process-with-audio', {
           method: 'POST',
@@ -116,7 +122,7 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
 
         const data = await response.json();
         console.log('API Response:', data);
-        
+
         // Set the audio source
         if (data.audioUrl && audioRef.current) {
           audioRef.current.src = data.audioUrl;
@@ -139,12 +145,12 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
   }, [youtubeId, vibeId]);
 
   // Remove the fake commentary generation
-  // useEffect(() => {
-  //   if (!isPlaying) return;
-    
+  useEffect(() => {
+    if (!isPlaying) return;
+
     const interval = setInterval(() => {
       setProgress(p => (p >= 100 ? 0 : p + 0.5));
-      
+
       // Randomly add brainrot commentary
       if (Math.random() > 0.8) {
         const phrases = [
@@ -175,14 +181,7 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
         <div className="relative flex-1 bg-black/40 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
           {/* YouTube Video Player */}
           {youtubeId ? (
-            <iframe
-              className="absolute inset-0 w-full h-full"
-              src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0&controls=1&rel=0`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
+            <div id="youtube-player" className="absolute inset-0 w-full h-full" />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center bg-zinc-900">
               {/* Placeholder when no video */}
@@ -193,18 +192,21 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
             </div>
           )}
 
+          {/* Hidden audio element for AI commentary playback */}
+          <audio ref={audioRef} className="hidden" />
+
           {/* Controls Overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="w-full h-1 bg-white/20 rounded-full mb-4 cursor-pointer overflow-hidden">
-              <motion.div 
+              <motion.div
                 className="h-full bg-neon-purple"
-                style={{ width: `${progress}%` }} 
+                style={{ width: `${progress}%` }}
               />
             </div>
-            
+
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <button 
+                <button
                   onClick={() => setIsPlaying(!isPlaying)}
                   className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform"
                 >
@@ -235,9 +237,9 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
               <span className="text-xs font-mono text-red-500 uppercase">Processing</span>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl border border-white/5 mb-4">
-            <div 
+            <div
               className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
               style={{ background: `linear-gradient(135deg, ${vibe?.color}, transparent)` }}
             >
@@ -252,59 +254,59 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
 
           {/* Audio Viz Mock */}
           <div className="flex items-end justify-center gap-1 h-12 mb-2">
-             {[...Array(20)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="w-1 bg-neon-purple rounded-full"
-                  animate={{ 
-                    height: isPlaying ? [10, Math.random() * 40 + 10, 10] : 4,
-                    opacity: isPlaying ? 1 : 0.3
-                  }}
-                  transition={{ duration: 0.2, repeat: Infinity, delay: i * 0.05 }}
-                />
-             ))}
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="w-1 bg-neon-purple rounded-full"
+                animate={{
+                  height: isPlaying ? [10, Math.random() * 40 + 10, 10] : 4,
+                  opacity: isPlaying ? 1 : 0.3
+                }}
+                transition={{ duration: 0.2, repeat: Infinity, delay: i * 0.05 }}
+              />
+            ))}
           </div>
         </div>
 
         {/* Transcript Feed */}
         <div className="flex-1 bg-black/40 backdrop-blur-md border border-white/10 p-6 rounded-3xl overflow-hidden relative">
           <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-black/40 to-transparent z-10" />
-          
+
           <div className="space-y-4 overflow-y-auto h-full pb-4 flex flex-col justify-end">
-             <AnimatePresence mode="popLayout">
-                {transcript.map((text, i) => (
-                  <motion.div
-                    key={`${i}-${text}`}
-                    initial={{ opacity: 0, x: 20, scale: 0.95 }}
-                    animate={{ opacity: 1, x: 0, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm"
-                  >
-                    <p className="text-white font-medium text-lg leading-snug">"{text}"</p>
-                  </motion.div>
-                ))}
-             </AnimatePresence>
-             {transcript.length === 0 && (
-                <div className="text-center text-muted-foreground py-10 opacity-50">
-                  Waiting for video playback...
-                </div>
-             )}
+            <AnimatePresence mode="popLayout">
+              {transcript.map((text, i) => (
+                <motion.div
+                  key={`${i}-${text}`}
+                  initial={{ opacity: 0, x: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="p-3 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm"
+                >
+                  <p className="text-white font-medium text-lg leading-snug">"{text}"</p>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+            {transcript.length === 0 && (
+              <div className="text-center text-muted-foreground py-10 opacity-50">
+                Waiting for video playback...
+              </div>
+            )}
           </div>
         </div>
 
         {/* Actions */}
         <div className="grid grid-cols-2 gap-4">
-           <button className="flex items-center justify-center gap-2 py-4 rounded-2xl bg-white text-black font-bold hover:bg-white/90 transition-colors">
-              <Share2 className="w-5 h-5" />
-              Share
-           </button>
-           <button 
-             onClick={onReset}
-             className="flex items-center justify-center gap-2 py-4 rounded-2xl bg-white/10 text-white font-bold hover:bg-white/20 transition-colors border border-white/10"
-           >
-              <RefreshCw className="w-5 h-5" />
-              New Video
-           </button>
+          <button className="flex items-center justify-center gap-2 py-4 rounded-2xl bg-white text-black font-bold hover:bg-white/90 transition-colors">
+            <Share2 className="w-5 h-5" />
+            Share
+          </button>
+          <button
+            onClick={onReset}
+            className="flex items-center justify-center gap-2 py-4 rounded-2xl bg-white/10 text-white font-bold hover:bg-white/20 transition-colors border border-white/10"
+          >
+            <RefreshCw className="w-5 h-5" />
+            New Video
+          </button>
         </div>
       </div>
     </div>
