@@ -350,6 +350,12 @@ ${JSON.stringify(formatted, null, 2)}
       const audio = await elevenlabs.textToSpeech.convert(selectedVoiceId, {
         text: fullText,
         model_id: "eleven_turbo_v2",
+        voice_settings: {
+        stability: 0.25,
+        similarity_boost: 0.8,
+        style: 0.8,
+        use_speaker_boost: true,
+        },
       });
 
       // Convert async iterable to buffer
@@ -483,6 +489,12 @@ ${JSON.stringify(formatted, null, 2)}
       const audio = await elevenlabs.textToSpeech.convert(selectedVoiceId, {
         text: fullText,
         model_id: "eleven_turbo_v2",
+        voice_settings: {
+          stability: 0.25,
+          similarity_boost: 0.8,
+          style: 0.8,
+          use_speaker_boost: true,
+        },
       });
 
       // Convert async iterable to buffer
@@ -547,7 +559,13 @@ ${JSON.stringify(formatted, null, 2)}
               const audioIter = await elevenlabs.textToSpeech.convert(voiceId || undefined, {
                 text: item.line,
                 model_id: "eleven_turbo_v2",
-              });
+                voice_settings: {
+              stability: 0.25,
+              similarity_boost: 0.8,
+              style: 0.8,
+              use_speaker_boost: true,
+            },
+          });
 
               const chunks: Buffer[] = [];
               for await (const chunk of audioIter) {

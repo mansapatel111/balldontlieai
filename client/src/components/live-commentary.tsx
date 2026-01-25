@@ -256,36 +256,6 @@ export function LiveCommentary({ vibeId, videoUrl, voiceId, onReset }: LiveComme
 
             {/* Hidden audio element for AI commentary playback */}
             <audio ref={audioRef} className="hidden" />
-
-            {/* Controls Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="w-full h-1 bg-white/20 rounded-full mb-4 cursor-pointer overflow-hidden">
-                <motion.div
-                  className="h-full bg-neon-purple"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={togglePlayPause}
-                    disabled={!youtubeId || isLoading}
-                    className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform disabled:opacity-50"
-                  >
-                    {isPlaying ? <Pause className="fill-current w-5 h-5" /> : <Play className="fill-current w-5 h-5 ml-1" />}
-                  </button>
-                  <div className="text-white font-mono text-sm">00:{Math.floor(progress).toString().padStart(2, '0')} / 01:30</div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <Volume2 className="text-white w-5 h-5" />
-                  <div className="w-24 h-1 bg-white/20 rounded-full">
-                    <div className="w-2/3 h-full bg-white rounded-full" />
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
