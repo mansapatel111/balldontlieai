@@ -27,13 +27,13 @@ export const VIBES = [
     icon: "MessageCircleHeart"
   },
   {
-    id: "frat-bro",
-    title: "Frat Bro",
-    vibe: "Loud, confident, zero hesitation.",
-    description: "Hype man energy, calls everything 'electric', lives for the boys. Explains sports in the simplest way possible. No overthinking—just dominance, momentum, and vibes. If it worked, it worked. If it didn’t, someone sold.",
-    color: "var(--color-neon-blue)",
-    gradient: "from-blue-600 to-cyan-600",
-    icon: "Beer"
+    id: "jamaican-vibes",
+    title: "Jamaican Vibes",
+    vibe: "High-energy, rhythmic, island flow.",
+    description: "A high-energy, charismatic narrator with smooth Jamaican-inspired lingo, rhythm, and confidence. Explains the game with hype, flow, and playful emphasis, punchy, funny, and confident. Perfect for hype with island flavor.",
+    color: "var(--color-neon-green)",
+    gradient: "from-emerald-400 to-teal-600",
+    icon: "MessageCircleHeart"
   }
 ];
 

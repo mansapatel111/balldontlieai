@@ -8,6 +8,7 @@ import { execFile } from "child_process";
 import { ElevenLabsClient } from "elevenlabs";
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 
 interface TranscriptSnippet {
   text: string;
@@ -507,10 +508,10 @@ ${JSON.stringify(formatted, null, 2)}
     }
   });
 
-  // Generate per-snippet audio files (throttled) and return mapping
+  // Generate per-snippet audio files with concurrency and filesystem caching
   app.post("/api/generate-audio-segments", async (req, res) => {
     try {
-      const { commentary, voiceId, pauseMs = 400 } = req.body;
+      const { commentary, voiceId, pauseMs = 200, concurrency = 4 } = req.body;
 
       if (!commentary || !Array.isArray(commentary)) {
         return res.status(400).json({ error: "commentary array is required" });
@@ -519,35 +520,56 @@ ${JSON.stringify(formatted, null, 2)}
       const audioDir = path.join(process.cwd(), "server", "public", "audio");
       if (!fs.existsSync(audioDir)) fs.mkdirSync(audioDir, { recursive: true });
 
-      const results: Array<{ start: number; duration: number; audioUrl: string; index: number }> = [];
+      const n = commentary.length;
+      const results: Array<any> = new Array(n);
 
-      for (let i = 0; i < commentary.length; i++) {
-        const item: RewrittenSnippet = commentary[i];
-        const filename = `commentary_segment_${Date.now()}_${i}.mp3`;
-        const filepath = path.join(audioDir, filename);
+      let nextIndex = 0;
 
-        try {
-          const audioIter = await elevenlabs.textToSpeech.convert(voiceId || undefined, {
-            text: item.line,
-            model_id: "eleven_turbo_v2",
-          });
+      const worker = async () => {
+        while (true) {
+          const i = nextIndex++;
+          if (i >= n) break;
 
-          const chunks: Buffer[] = [];
-          for await (const chunk of audioIter) {
-            chunks.push(chunk);
+          const item: RewrittenSnippet = commentary[i];
+
+          // compute cache key based on voice + snippet content/position
+          const hash = crypto.createHash('sha256')
+            .update(`${voiceId || ''}|${item.start}|${item.duration}|${item.line}`)
+            .digest('hex');
+
+          const filename = `commentary_segment_${hash}.mp3`;
+          const filepath = path.join(audioDir, filename);
+
+          try {
+            if (fs.existsSync(filepath)) {
+              results[i] = { start: item.start, duration: item.duration, audioUrl: `/audio/${filename}`, index: i, cached: true };
+            } else {
+              const audioIter = await elevenlabs.textToSpeech.convert(voiceId || undefined, {
+                text: item.line,
+                model_id: "eleven_turbo_v2",
+              });
+
+              const chunks: Buffer[] = [];
+              for await (const chunk of audioIter) {
+                chunks.push(chunk);
+              }
+              const buffer = Buffer.concat(chunks);
+              fs.writeFileSync(filepath, buffer);
+              results[i] = { start: item.start, duration: item.duration, audioUrl: `/audio/${filename}`, index: i, cached: false };
+            }
+          } catch (e: any) {
+            console.error("Failed to generate audio for snippet", i, e);
+            results[i] = { start: item.start, duration: item.duration, audioUrl: "", index: i, error: String(e) };
           }
-          const buffer = Buffer.concat(chunks);
-          fs.writeFileSync(filepath, buffer);
 
-          results.push({ start: item.start, duration: item.duration, audioUrl: `/audio/${filename}`, index: i });
-        } catch (e: any) {
-          console.error("Failed to generate audio for snippet", i, e);
-          results.push({ start: item.start, duration: item.duration, audioUrl: "", index: i });
+          // small pause between requests per worker to be polite
+          await new Promise((r) => setTimeout(r, pauseMs));
         }
+      };
 
-        // small pause to avoid overwhelming external service
-        await new Promise((r) => setTimeout(r, pauseMs));
-      }
+      // start workers
+      const workers = Array.from({ length: Math.max(1, Math.min(concurrency, n)) }, () => worker());
+      await Promise.all(workers);
 
       res.json({ segments: results });
     } catch (error: any) {

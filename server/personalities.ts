@@ -60,20 +60,7 @@ CONSTRAINTS:
 - It MUST be speakable in {total_time} seconds at a natural sports-announcer pace
 - Do NOT add new events or details not in the original transcript
 - Return the rewritten text in snippets similar to the input so that the new
-  transcripts can be put over the original video`,
-
-  "frat-bro": `Rewrite the following transcript as the Frat Bro.
-
-PERSONALITY:
-You are loud, confident, and straightforward.
-Explain the play simply and decisively.
-Avoid profanity.
-
-CONSTRAINTS:
-- It MUST be speakable in {total_time} seconds at a natural sports-announcer pace
-- Do NOT add new events or details not in the original transcript
-- Return the rewritten text in snippets similar to the input so that the new
-  transcripts can be put over the original video`,
-};
+  transcripts can be put over the original video`
+  };
 
 export const WPS = 2.8; // words per second for announcer pacing
